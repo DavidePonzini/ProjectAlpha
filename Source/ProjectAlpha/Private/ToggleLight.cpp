@@ -14,10 +14,12 @@ AToggleLight::AToggleLight()
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
 
+/*
 	LightComp = CreateDefaultSubobject<UPointLightComponent>(TEXT("LightComp"));
 	LightComp->AttachTo(RootComponent);
 	LightComp->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
 	LightComp->bVisible = false;
+*/
 
 	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->AttachTo(RootComponent);
@@ -58,7 +60,7 @@ void AToggleLight::TurnOn()
 		bIsLit = true;
 		
 		// Turn on light and sound
-		LightComp->SetVisibility(true);
+//		LightComp->SetVisibility(true);
 		AudioComp->Play();
 		ParticleComp->Activate();
 	}
@@ -72,7 +74,7 @@ void AToggleLight::TurnOff()
 		bIsLit = false;
 		
 		// Turn off light and sound
-		LightComp->SetVisibility(false);
+//		LightComp->SetVisibility(false);
 		AudioComp->Stop();
 		ParticleComp->Deactivate();
 	}

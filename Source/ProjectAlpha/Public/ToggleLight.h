@@ -15,8 +15,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "ToggleLight | Mesh")
 		UStaticMeshComponent* MeshComp;
 
-	UPROPERTY(EditAnywhere, Category = "ToggleLight | Light")
-		UPointLightComponent* LightComp;
+//	UPROPERTY(EditAnywhere, Category = "ToggleLight | Light")
+//		UPointLightComponent* LightComp;
 
 	UPROPERTY(EditAnywhere, Category = "ToggleLight | Sound")
 		UAudioComponent* AudioComp;
