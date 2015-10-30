@@ -23,12 +23,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "ToggleLight | Light")
 		bool bStartsLit;
-	
-	UPROPERTY(EditAnywhere, Category = "ToggleLight | Sound")
-		float fAudioFadeInTime;
-
-	UPROPERTY(EditAnywhere, Category = "ToggleLight | Sound")
-		float fAudioFadeOutTime;
 
 	UPROPERTY(EditAnywhere, Category = "ToggleLight | Particles")
 		UParticleSystemComponent* ParticleComp;

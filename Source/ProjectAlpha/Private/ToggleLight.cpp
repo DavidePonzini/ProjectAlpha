@@ -32,8 +32,6 @@ AToggleLight::AToggleLight()
 	// Set default values
 	bIsLit = false;
 	bStartsLit = false;
-	fAudioFadeInTime = 0.5f;
-	fAudioFadeOutTime = 0.5f;
 }
 
 // Called when the game starts or when spawned
@@ -61,7 +59,7 @@ void AToggleLight::TurnOn()
 		
 		// Turn on light and sound
 		LightComp->SetVisibility(true);
-		AudioComp->FadeIn(fAudioFadeInTime, 1.0f);
+		AudioComp->Play();
 		ParticleComp->Activate();
 	}
 }
@@ -75,7 +73,7 @@ void AToggleLight::TurnOff()
 		
 		// Turn off light and sound
 		LightComp->SetVisibility(false);
-		AudioComp->FadeOut(fAudioFadeOutTime, 0.0f);
+		AudioComp->Stop();
 		ParticleComp->Deactivate();
 	}
 }
