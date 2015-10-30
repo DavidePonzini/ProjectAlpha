@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "ToggleLight | Sound")
 		float fAudioFadeOutTime;
 
+	UPROPERTY(EditAnywhere, Category = "ToggleLight | Particles")
+		UParticleSystemComponent* ParticleComp;
+
 private:
 	// Is the light currently lit?
 	bool bIsLit;
