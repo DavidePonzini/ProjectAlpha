@@ -11,23 +11,23 @@ class PROJECTALPHA_API AToggleLight : public AActor
 	GENERATED_BODY()
 
 public:
-	// Components
-	UPROPERTY(EditAnywhere, Category = "ToggleLight | Mesh")
-		UStaticMeshComponent* MeshComp;
-
-//	UPROPERTY(EditAnywhere, Category = "ToggleLight | Light")
-//		UPointLightComponent* LightComp;
-
-	UPROPERTY(EditAnywhere, Category = "ToggleLight | Sound")
-		UAudioComponent* AudioComp;
-
-	UPROPERTY(EditAnywhere, Category = "ToggleLight | Light")
+	// Defaults
+	UPROPERTY(EditAnywhere, Category = "ToggleLight | Defaults")
 		bool bStartsLit;
 
-	UPROPERTY(EditAnywhere, Category = "ToggleLight | Particles")
-		UParticleSystemComponent* ParticleComp;
+	// Mesh
+	UPROPERTY(EditDefaultsOnly, Category = "ToggleLight | Mesh")
+		UStaticMeshComponent* MeshComp;
 
-private:
+	// Sound
+	UPROPERTY(EditDefaultsOnly, Category = "ToggleLight | Sound")
+		UAudioComponent* AudioComp;
+
+	// Particles
+	UPROPERTY(EditDefaultsOnly, Category = "ToggleLight | Particles")
+	UParticleSystemComponent* ParticleComp;
+
+protected:
 	// Is the light currently lit?
 	bool bIsLit;
 
@@ -41,17 +41,13 @@ public:
 
 	// Is the light currenlty lit?
 	UFUNCTION(BlueprintCallable, Category = "ToggleLight")
-		bool IsLit();
+		bool IsLit() const;
 
-	// Turn the light on
+	// Turn the light on / off
 	UFUNCTION(BlueprintCallable, Category = "ToggleLight")
-		void TurnOn();
-
-	// Turn the light off
+		virtual void TurnOn();
 	UFUNCTION(BlueprintCallable, Category = "ToggleLight")
-		void TurnOff();
-
-	// Toggle light
+		virtual void TurnOff();
 	UFUNCTION(BlueprintCallable, Category = "ToggleLight")
 		void Toggle();
 };
