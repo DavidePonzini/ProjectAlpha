@@ -12,15 +12,14 @@ class PROJECTALPHA_API APlayerCharacter : public ACharacter
 
 	// Components
 public:
-	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | Mesh")
-		UStaticMeshComponent* MeshComp;
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | Camera")
 		USpringArmComponent* SpringArmComp;
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | Camera")
 		UCameraComponent* CameraComp;
 
-
-	
+	// TO BE REMOVED
+	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | TEXT")
+		UTextRenderComponent* text;
 
 public:
 	// Sets default values for this character's properties
@@ -36,7 +35,13 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 	// Movement
-	void MoveForward(float AxisValue);
-	void MoveRight(float AxisValue);
-	void Turn(float AxisValue);
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+	
+	// Camera
+	void Turn(float Value);
+	void LookUp(float Value);
+
+	// Jump
+	void Jump();
 };

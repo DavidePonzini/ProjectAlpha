@@ -11,21 +11,30 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Initialise components
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	RootComponent = MeshComp;
+	
+	// TEXT FOR DEBUG -- TO BE REMOVED
+	text = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXT"));
+	text->SetWorldSize(150.f);
+	text->SetHorizontalAlignment(EHTA_Center);
+	text->AttachTo(RootComponent);
+	RootComponent = text;
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->AttachTo(RootComponent);
-	SpringArmComp->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
-	SpringArmComp->TargetArmLength = 400.0f;
+	SpringArmComp->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
+	SpringArmComp->TargetArmLength = 300.0f;
 	SpringArmComp->bEnableCameraLag = true;
-	SpringArmComp->CameraLagSpeed = 3.0f;
+	SpringArmComp->CameraLagSpeed = 2.0f;
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->AttachTo(SpringArmComp);
 
 	// Auto possess player
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -47,19 +56,52 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
+	// Movement
+	InputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
+	InputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
+
+	// Camera
+	InputComponent->BindAxis("Turn", this, &APlayerCharacter::Turn);
+	InputComponent->BindAxis("LookUp", this, &APlayerCharacter::LookUp);
+
+	// Jump
+	InputComponent->BindAction("Jump", IE_Pressed, this, &APlayerCharacter::Jump);
 }
 
-void MoveForward(float AxisValue)
+void APlayerCharacter::MoveForward(float Value)
 {
-	return;
+	if (Controller && Value != 0)
+	{
+		const FRotator Rotation = GetControlRotation();
+		const FVector Direction = FRotationMatrix(Rotation).GetScaledAxis(EAxis::X);
+		AddMovementInput(Direction, Value);
+	}
+
 }
 
-void MoveRight(float AxisValue)
+void APlayerCharacter::MoveRight(float Value)
 {
-	return;
+	if (Controller && Value != 0)
+	{
+		const FRotator Rotation = GetControlRotation();
+		const FVector Direction = FRotationMatrix(Rotation).GetScaledAxis(EAxis::Y);
+		AddMovementInput(Direction, Value);
+	}
 }
 
-void Turn(float AxisValue)
+void APlayerCharacter::Turn(float Value)
+{
+	AddControllerYawInput(Value);
+}
+
+void APlayerCharacter::LookUp(float Value)
+{
+	FRotator Rotation = CameraComp->GetComponentRotation();
+	Rotation.Pitch += Value;
+	CameraComp->SetWorldRotation(Rotation);
+}
+
+void APlayerCharacter::Jump()
 {
 	return;
 }
