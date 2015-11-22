@@ -12,6 +12,7 @@ class PROJECTALPHA_API APlayerCharacter : public ACharacter
 
 	// Components
 public:
+	// Camera components
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | Camera")
 		USpringArmComponent* SpringArmComp;
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | Camera")
@@ -22,26 +23,26 @@ public:
 		UTextRenderComponent* text;
 
 public:
-	// Sets default values for this character's properties
+	/** Sets default values for this character's properties */
 	APlayerCharacter();
 
-	// Called when the game starts or when spawned
+	/** Called when the game starts or when spawned */
 	virtual void BeginPlay() override;
 	
-	// Called every frame
+	/** Called every frame */
 	virtual void Tick( float DeltaSeconds ) override;
 
-	// Called to bind functionality to input
+	/** Called to bind functionality to input */
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	// Movement
+	/** Movement */
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 	
-	// Camera
+	/** Camera */
 	void Turn(float Value);
 	void LookUp(float Value);
 
-	// Jump
+	/** Jump */
 	void Jump();
 };

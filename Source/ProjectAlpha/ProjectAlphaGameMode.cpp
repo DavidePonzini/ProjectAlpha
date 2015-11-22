@@ -6,3 +6,25 @@
 
 
 
+void AProjectAlphaGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	ChangeMenuWidget(StartingWidgetClass);
+}
+
+void AProjectAlphaGameMode::ChangeMenuWidget(TSubclassOf<UUserWidget> NewWidgetClass)
+{
+	if (CurrentWidget)
+	{
+		CurrentWidget->RemoveFromViewport();
+		CurrentWidget = NULL;
+	}
+	if (NewWidgetClass)
+	{
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), NewWidgetClass);
+		if (CurrentWidget)
+		{
+			CurrentWidget->AddToViewport();
+		}
+	}
+}
