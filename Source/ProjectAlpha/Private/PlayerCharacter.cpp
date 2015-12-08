@@ -10,6 +10,16 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+
+
 	// Initialise components
 	
 	// TEXT FOR DEBUG -- TO BE REMOVED
@@ -17,21 +27,25 @@ APlayerCharacter::APlayerCharacter()
 	text->SetWorldSize(150.f);
 	text->SetHorizontalAlignment(EHTA_Center);
 	text->AttachTo(RootComponent);
-	RootComponent = text;
+//	text->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
+	text->AttachTo(RootComponent);
+	text->SetVisibility(false);
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->AttachTo(RootComponent);
 	SpringArmComp->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 	SpringArmComp->TargetArmLength = 300.0f;
-	SpringArmComp->bEnableCameraLag = true;
-	SpringArmComp->CameraLagSpeed = 2.0f;
+	SpringArmComp->bEnableCameraLag = false;
+	SpringArmComp->CameraLagSpeed = 3.0f;
+	SpringArmComp->bUsePawnControlRotation = true;
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->AttachTo(SpringArmComp);
+	CameraComp->bUsePawnControlRotation = false;
 
 	// Auto possess player
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
-
+	
 
 
 	
@@ -66,6 +80,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 
 	// Jump
 	InputComponent->BindAction("Jump", IE_Pressed, this, &APlayerCharacter::Jump);
+	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 }
 
 void APlayerCharacter::MoveForward(float Value)
@@ -74,6 +89,7 @@ void APlayerCharacter::MoveForward(float Value)
 	{
 		const FRotator Rotation = GetControlRotation();
 		const FVector Direction = FRotationMatrix(Rotation).GetScaledAxis(EAxis::X);
+
 		AddMovementInput(Direction, Value);
 	}
 
@@ -85,6 +101,7 @@ void APlayerCharacter::MoveRight(float Value)
 	{
 		const FRotator Rotation = GetControlRotation();
 		const FVector Direction = FRotationMatrix(Rotation).GetScaledAxis(EAxis::Y);
+		
 		AddMovementInput(Direction, Value);
 	}
 }
@@ -96,12 +113,10 @@ void APlayerCharacter::Turn(float Value)
 
 void APlayerCharacter::LookUp(float Value)
 {
-	FRotator Rotation = CameraComp->GetComponentRotation();
-	Rotation.Pitch += Value;
-	CameraComp->SetWorldRotation(Rotation);
+	AddControllerPitchInput(Value);
 }
 
 void APlayerCharacter::Jump()
 {
-	return;
+	ACharacter::Jump();
 }
