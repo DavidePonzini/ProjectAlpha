@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Character.h"
+#include "InteractableActor.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -45,4 +46,16 @@ public:
 
 	/** Jump */
 	void Jump();
+
+	/**** Actor Interaction *****/
+public:
+	virtual void Interact();
+
+	class AInteractableActor* GetInteractableInView();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Interaction")
+		float fMaxInteractDistance;
+
+protected:
+	class AInteractableActor* FocusedInteractable;
 };

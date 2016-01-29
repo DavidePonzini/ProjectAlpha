@@ -19,6 +19,10 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 
+	// Interaction
+	fMaxInteractDistance = 400;
+	FocusedInteractable = NULL;
+
 
 	// Initialise components
 	
@@ -28,7 +32,6 @@ APlayerCharacter::APlayerCharacter()
 	text->SetHorizontalAlignment(EHTA_Center);
 	text->AttachTo(RootComponent);
 //	text->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
-	text->AttachTo(RootComponent);
 	text->SetVisibility(false);
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
@@ -55,7 +58,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -63,6 +66,22 @@ void APlayerCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	//Get interactable in view
+	if (Controller && Controller->IsLocalController())
+	{
+		AInteractableActor* InteractableInView = GetInteractableInView();
+
+		if (FocusedInteractable != InteractableInView)
+		{
+			if (FocusedInteractable)
+				FocusedInteractable->EndFocus();
+			
+			FocusedInteractable = InteractableInView;
+
+			if (FocusedInteractable)
+				FocusedInteractable->BeginFocus();
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -81,6 +100,9 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 	// Jump
 	InputComponent->BindAction("Jump", IE_Pressed, this, &APlayerCharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	// Interaction
+	InputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::Interact);
 }
 
 void APlayerCharacter::MoveForward(float Value)
@@ -119,4 +141,39 @@ void APlayerCharacter::LookUp(float Value)
 void APlayerCharacter::Jump()
 {
 	ACharacter::Jump();
+}
+
+void APlayerCharacter::Interact()
+{
+	if(FocusedInteractable)
+		FocusedInteractable->Interact(this);
+}
+
+AInteractableActor* APlayerCharacter::GetInteractableInView()
+{
+	if(!Controller)
+		return NULL;
+
+	FVector CamLoc;
+	FRotator CamRot;
+
+	Controller->GetPlayerViewPoint(CamLoc, CamRot);
+
+	const FVector TraceStart = CamLoc + FVector(0.0f, 0.0f, -50.0f);
+	const FVector TraceDirection = (CamRot + FRotator(15.0f, 0.0f, 0.0f)).Vector();
+	const FVector TraceEnd = TraceStart + TraceDirection * fMaxInteractDistance;
+
+	FCollisionQueryParams TraceParams(FName("TraceInteractableActor"), true, this);
+	TraceParams.bTraceAsyncScene = true;
+	TraceParams.bReturnPhysicalMaterial = false;
+	TraceParams.bTraceComplex = true;
+
+	FHitResult Hit(ForceInit);
+	GetWorld()->LineTraceSingle(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
+	//GetWorld()->
+
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Green, false, 0.2);
+	//DrawDebugCone(GetWorld(), TraceStart, TraceDirection, fMaxInteractDistance, 0.349066, 0.349066, 4, FColor::Yellow, false, 0.2);
+
+	return Cast<AInteractableActor> (Hit.GetActor());
 }

@@ -3,10 +3,11 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "InteractableActor.h"
 #include "ToggleLight.generated.h"
 
 UCLASS()
-class PROJECTALPHA_API AToggleLight : public AActor
+class PROJECTALPHA_API AToggleLight : public AInteractableActor
 {
 	GENERATED_BODY()
 
@@ -17,7 +18,7 @@ public:
 		bool bStartsLit;
 
 	/** Mesh component */
-	UPROPERTY(EditDefaultsOnly, Category = "ToggleLight | Mesh")
+/*	UPROPERTY(EditDefaultsOnly, Category = "ToggleLight | Mesh")
 		UStaticMeshComponent* MeshComp;
 
 	/** Sound component */
@@ -51,4 +52,6 @@ public:
 		virtual void TurnOff();
 	UFUNCTION(BlueprintCallable, Category = "ToggleLight")
 		void Toggle();
+
+	virtual void Interact(APawn* Instigator) override;
 };

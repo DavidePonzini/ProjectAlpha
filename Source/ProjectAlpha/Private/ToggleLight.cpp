@@ -11,12 +11,13 @@ AToggleLight::AToggleLight()
 	PrimaryActorTick.bCanEverTick = false;
 
 	// Initialise components
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	RootComponent = MeshComp;
+//	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
+//	RootComponent = MeshComp;
 
 	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->AttachTo(RootComponent);
 	AudioComp->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
+	AudioComp->bAutoActivate = false;
 
 	ParticleComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
 	ParticleComp->AttachTo(RootComponent);
@@ -31,7 +32,7 @@ AToggleLight::AToggleLight()
 // Called when the game starts or when spawned
 void AToggleLight::BeginPlay()
 {
-		Super::BeginPlay();
+	Super::BeginPlay();
 
 	// Turn on light if we need to
 	if (bStartsLit)
@@ -79,4 +80,11 @@ void AToggleLight::Toggle()
 		TurnOff();
 	else
 		TurnOn();
+}
+
+void AToggleLight::Interact(APawn* Instigator)
+{
+	Super::Interact(Instigator);
+
+	Toggle();
 }
