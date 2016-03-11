@@ -10,23 +10,47 @@ class PROJECTALPHA_API AInteractableActor : public AActor
 {
 	GENERATED_BODY()
 
-private:
-	UTextRenderComponent* Text;
+public:
+	/* Sets default values for this actor's properties */
+	AInteractableActor();
 
 
-protected:
-	// Sets default values for this actor's properties
-	AInteractableActor(); 
-	
+	/***** COMPONENTS *****/
+public:
+	/* TO BE REMOVED */
+	UPROPERTY(EditAnywhere, Category = "Text")
+		UTextRenderComponent* Text;
+
 	UPROPERTY(EditAnywhere, Category = "MeshComponent")
 		UStaticMeshComponent* MeshComp;
-	
-public:	
-	virtual void BeginFocus();
 
-	virtual void EndFocus();
-
-	virtual void Interact(APawn* Instigator);
-	
 	UStaticMeshComponent* GetMeshComponent() const;
+
+	
+	/***** FOCUS *****/
+protected:
+	bool bIsFocused;
+
+public:
+	virtual void BeginFocus(APawn* Instigator);
+	virtual void EndFocus(APawn* Instigator);
+
+	
+	/***** INTERACTION *****/
+protected:
+	/* Blocks interaction */
+	UPROPERTY(EditAnywhere, Category = "Interaction")
+		bool bBlockInteraction;
+	
+	/* Actual code called when interacting */
+	virtual void InteractImplementation(APawn* Instigator);
+
+public:
+	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")
+		void Interact(APawn* WhoInteracted);
+
+	/* Returns true is activation is not blocked and this actor is focused */
+	UFUNCTION(BlueprintCallable, Category = "Interaction")
+		bool CanBeInteracted() const;
+
 };

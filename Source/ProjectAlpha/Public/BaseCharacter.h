@@ -3,26 +3,73 @@
 #pragma once
 
 #include "GameFramework/Character.h"
+#include "BaseItem.h"
 #include "BaseCharacter.generated.h"
 
-UCLASS()
+UCLASS(abstract)
 class PROJECTALPHA_API ABaseCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+	/** Sets default values for this character's properties */
 	ABaseCharacter();
 
-	// Called when the game starts or when spawned
+	/** Called when the game starts or when spawned */
 	virtual void BeginPlay() override;
-	
-	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	
-	
+	/***** STATS *****/
+public:
+	/** Maximum allowed value of Health, represents full health */
+	UPROPERTY(EditAnywhere, Category = "Stats")
+		float MaxHealth;
+protected:
+	/** Current health */
+	UPROPERTY()
+		float Health;
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Stats|Health")
+		float GetMaxHealth() const;
+	UFUNCTION(BlueprintCallable, Category = "Stats|Health")
+		float GetHealth() const;
+
+	/***** STATS CHANGES *****/
+public:
+	UFUNCTION(BlueprintCallable, Category = "Stats|Health")
+		virtual float RestoreHealth(float Amount);
+
+	/** Take Damage */
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+		virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* WhoDamaged, AActor* DamageCauser) override;
+
+
+	/***** DEATH *****/	
+	/** Called when this actor dies */
+	UFUNCTION(BlueprintCallable, Category = "Death")
+		virtual void Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+
+	/** Handle character getting out of world */
+	UFUNCTION(BlueprintCallable, Category = "OutOfWorld")
+		virtual void OutOfWorld();
+
+
+	/***** INVENTORY *****/
+public:
+	FName GetAttachPoint(EInventorySlot Slot);
+
+protected:
+	TArray<ABaseItem*> Inventory;
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+		virtual void AddItem(ABaseItem* Item);
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+		virtual void RemoveItem(ABaseItem* Item);
+
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+		virtual void EquipItem(ABaseItem* Item);
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+		virtual void UnEquipItem(ABaseItem* Item);
 };

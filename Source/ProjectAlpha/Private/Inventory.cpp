@@ -10,3 +10,11 @@ Inventory::Inventory()
 Inventory::~Inventory()
 {
 }
+
+void Inventory::AddItem(ABaseItem* Item)
+{
+	if (!Item)
+		return;
+
+	Items.Add(Item);
+}

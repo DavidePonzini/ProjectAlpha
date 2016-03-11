@@ -2,16 +2,16 @@
 
 #pragma once
 
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"
 #include "InteractableActor.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
-class PROJECTALPHA_API APlayerCharacter : public ACharacter
+class PROJECTALPHA_API APlayerCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
-	// Components
+	/***** COMPONENTS *****/
 public:
 	// Camera components
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | Camera")
@@ -19,9 +19,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | Camera")
 		UCameraComponent* CameraComp;
 
-	// TO BE REMOVED
-	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | TEXT")
-		UTextRenderComponent* text;
+/*
+	UPROPERTY(EditAnywhere, Category = "ViewCone")
+		UStaticMeshComponent* ViewCone;
+
+	UFUNCTION(BlueprintCallable, Category = "TEST")
+		UStaticMeshComponent* GetViewCone() const;
+*/
 
 public:
 	/** Sets default values for this character's properties */
@@ -31,10 +35,10 @@ public:
 	virtual void BeginPlay() override;
 	
 	/** Called every frame */
-	virtual void Tick( float DeltaSeconds ) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	/** Called to bind functionality to input */
-	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
 	/** Movement */
 	void MoveForward(float Value);
@@ -47,15 +51,20 @@ public:
 	/** Jump */
 	void Jump();
 
-	/**** Actor Interaction *****/
+	/** Death */
+	virtual void Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser) override;
+
+	/**** INTERACTION *****/
 public:
-	virtual void Interact();
-
-	class AInteractableActor* GetInteractableInView();
-
-	UPROPERTY(EditDefaultsOnly, Category = "Interaction")
-		float fMaxInteractDistance;
+	UFUNCTION(BlueprintCallable, Category = "Interaction")
+		virtual void Interact();
 
 protected:
-	class AInteractableActor* FocusedInteractable;
+	UPROPERTY(EditDefaultsOnly, Category = "Interaction")
+		float fMaxInteractDistance; 
+
+private:
+	AInteractableActor* GetInteractableInView();
+	AInteractableActor* FocusedInteractable;
+	
 };

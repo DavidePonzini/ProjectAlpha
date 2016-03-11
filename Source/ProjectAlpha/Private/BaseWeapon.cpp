@@ -26,3 +26,16 @@ void ABaseWeapon::Tick( float DeltaTime )
 
 }
 
+float ABaseWeapon::GetDamage() const
+{
+	return Damage;
+}
+
+void ABaseWeapon::SetDamage(float Value)
+{
+	if (Value < 0)
+		Value = 0;
+
+	Damage = Value;
+}
+

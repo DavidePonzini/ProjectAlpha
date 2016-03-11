@@ -7,10 +7,8 @@
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -21,19 +19,10 @@ APlayerCharacter::APlayerCharacter()
 
 	// Interaction
 	fMaxInteractDistance = 400;
-	FocusedInteractable = NULL;
+	FocusedInteractable = nullptr;
 
 
 	// Initialise components
-	
-	// TEXT FOR DEBUG -- TO BE REMOVED
-	text = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXT"));
-	text->SetWorldSize(150.f);
-	text->SetHorizontalAlignment(EHTA_Center);
-	text->AttachTo(RootComponent);
-//	text->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
-	text->SetVisibility(false);
-
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->AttachTo(RootComponent);
 	SpringArmComp->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
@@ -46,11 +35,13 @@ APlayerCharacter::APlayerCharacter()
 	CameraComp->AttachTo(SpringArmComp);
 	CameraComp->bUsePawnControlRotation = false;
 
+/*
+	ViewCone = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ViewCone"));
+	ViewCone->AttachTo(CameraComp);
+*/
+
 	// Auto possess player
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
-	
-
-
 	
 }
 
@@ -74,18 +65,18 @@ void APlayerCharacter::Tick( float DeltaTime )
 		if (FocusedInteractable != InteractableInView)
 		{
 			if (FocusedInteractable)
-				FocusedInteractable->EndFocus();
+				FocusedInteractable->EndFocus(this);
 			
 			FocusedInteractable = InteractableInView;
 
 			if (FocusedInteractable)
-				FocusedInteractable->BeginFocus();
+				FocusedInteractable->BeginFocus(this);
 		}
 	}
 }
 
 // Called to bind functionality to input
-void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
+void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
@@ -149,31 +140,128 @@ void APlayerCharacter::Interact()
 		FocusedInteractable->Interact(this);
 }
 
+/*
+UStaticMeshComponent* APlayerCharacter::GetViewCone() const
+{
+	return ViewCone;
+}
+*/
+
 AInteractableActor* APlayerCharacter::GetInteractableInView()
 {
 	if(!Controller)
 		return NULL;
 
+	const float TraceRadius = 150;
+	const enum ECollisionChannel ECC_Interactable = ECC_GameTraceChannel1;
+	const enum EObjectTypeQuery TraceObject = ObjectTypeQuery1;
+
 	FVector CamLoc;
 	FRotator CamRot;
-
 	Controller->GetPlayerViewPoint(CamLoc, CamRot);
+	
+	const FVector TraceStart = CamLoc;
+	const FVector TraceDirection = CamRot.Vector();
+	const FVector TraceOffset = FVector(SpringArmComp->TargetArmLength + TraceRadius);
+	const FVector TraceCentre = TraceStart + TraceDirection * TraceOffset;
 
-	const FVector TraceStart = CamLoc + FVector(0.0f, 0.0f, -50.0f);
+	FCollisionQueryParams TraceParams(FName("TraceInteractableActor"), true, this);
+	TraceParams.bTraceAsyncScene = true;
+	TraceParams.bReturnPhysicalMaterial = false;
+	TraceParams.bTraceComplex = false;
+
+//	TArray<FHitResult> Hits;
+	FHitResult Hit(ForceInit);
+
+//	DrawDebugSphere(GetWorld(), TraceStart, TraceRadius, 8, FColor::Cyan, false, 0.05);
+//	DrawDebugSphere(GetWorld(), TraceCentre, TraceRadius, 8, FColor::Blue, false, 0.05);
+//	GetWorld()->SweepMultiByObjectType(Hits, TraceStart, TraceCentre, FQuat(), TraceObject, FCollisionShape::MakeSphere(TraceRadius), TraceParams);
+//	UE_LOG(LogTemp, Warning, TEXT("--> %p"), Hit.GetActor());
+//	return Cast<AInteractableActor>(Hit.GetActor());
+	GetWorld()->SweepSingleByChannel(Hit, TraceCentre, TraceCentre+TraceDirection, FQuat(), ECC_Interactable, FCollisionShape::MakeSphere(TraceRadius), TraceParams);
+
+	return Cast<AInteractableActor>(Hit.GetActor());
+
+/*	AInteractableActor* ia;
+	int i = 0;
+	for (FHitResult hit : Hits)
+	{
+		ia = Cast<AInteractableActor>(hit.GetActor());
+
+		if (ia)
+		{
+			// Perform line trace to check if object is actually visible
+			UE_LOG(LogTemp, Warning, TEXT(">>> %d"), i);
+			return ia;
+		}
+		i++;
+	}
+
+	return nullptr;
+*/	
+/*
+	TArray<AActor*> actors;
+	ViewCone->GetOverlappingActors(actors, AInteractableActor::StaticClass());
+
+	AInteractableActor* ia;
+	for (AActor* actor : actors)
+	{
+		ia = Cast<AInteractableActor>(actor);
+
+		if (ia)
+		{
+			// Perform line trace to check if object is visible
+			return ia;
+		}
+	}
+
+	return nullptr;
+
+*/
+/*	const FVector TraceStart = CamLoc + FVector(0.0f, 0.0f, -50.0f);
 	const FVector TraceDirection = (CamRot + FRotator(15.0f, 0.0f, 0.0f)).Vector();
 	const FVector TraceEnd = TraceStart + TraceDirection * fMaxInteractDistance;
 
 	FCollisionQueryParams TraceParams(FName("TraceInteractableActor"), true, this);
 	TraceParams.bTraceAsyncScene = true;
 	TraceParams.bReturnPhysicalMaterial = false;
-	TraceParams.bTraceComplex = true;
+	TraceParams.bTraceComplex = false;
 
-	FHitResult Hit(ForceInit);
-	GetWorld()->LineTraceSingle(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
-	//GetWorld()->
+	TArray<FHitResult> Hits;
+//	FHitResult Hit(ForceInit);
+//	GetWorld()->Sweep
+	GetWorld()->SweepMultiByObjectType(Hits, TraceStart, TraceEnd, FQuat(), ECC_Visibility, FCollisionShape::MakeSphere(150), TraceParams);
+
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Yellow, false, 0.05);
+	DrawDebugSphere(GetWorld(), TraceEnd, 150, 6, FColor::Blue);
+//	const FString name = GetDebugName(Hit.GetActor());
+//	DrawDebugString(GetWorld(), TraceEnd, name, nullptr, FColor::White, 0.01);
+/*
+//	GetWorld()->LineTraceSingle(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
+//	GetWorld()->
 
 	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Green, false, 0.2);
-	//DrawDebugCone(GetWorld(), TraceStart, TraceDirection, fMaxInteractDistance, 0.349066, 0.349066, 4, FColor::Yellow, false, 0.2);
+//	DrawDebugCone(GetWorld(), TraceStart, TraceDirection, fMaxInteractDistance, 0.349066, 0.349066, 4, FColor::Yellow, false, 0.2);
+	DrawDebugSphere(GetWorld(), CamLoc + CamRot.Vector() * fMaxInteractDistance, 150, 8, FColor::Blue, false, 0.2);
+*/
+/*	AInteractableActor* ia = nullptr;
+	int r = rand();
+	for (FHitResult result : Hits)
+	{
+		ia = Cast<AInteractableActor>(result.GetActor());
+		UE_LOG(LogTemp, Warning, TEXT("%d - Cast to IA: %p"), r, ia);
+		if (ia)
+		{
+			UE_LOG(LogTemp, Error, TEXT("%d - Cast to IA: %s"), r, *GetDebugName(ia));
+			return ia;
+		}
+	}
+	return nullptr;
+*/
+}
 
-	return Cast<AInteractableActor> (Hit.GetActor());
+void APlayerCharacter::Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
+{
+	Super::Die(KillingDamage, DamageEvent, Killer, DamageCauser);
 }

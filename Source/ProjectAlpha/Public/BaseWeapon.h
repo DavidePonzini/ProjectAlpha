@@ -2,24 +2,37 @@
 
 #pragma once
 
-#include "GameFramework/Actor.h"
+#include "BaseItem.h"
 #include "BaseWeapon.generated.h"
 
 UCLASS()
-class PROJECTALPHA_API ABaseWeapon : public AActor
+class PROJECTALPHA_API ABaseWeapon : public ABaseItem
 {
 	GENERATED_BODY()
 	
-public:	
+public:
 	// Sets default values for this actor's properties
 	ABaseWeapon();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
-	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
 
+	// Called every frame
+	virtual void Tick(float DeltaSeconds) override;
 	
+
+	/***** Damage *****/
+protected:
+	UPROPERTY(EditAnywhere, Category = "Damage")
+		float Damage;
+//	UPROPERTY(EditAnywhere, Category = "Damage")
+//		UDamageType DamageType;
 	
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+		float GetDamage() const;
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+		void SetDamage(float Value);
+
 };

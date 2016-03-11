@@ -42,16 +42,16 @@ public:
 	virtual void BeginPlay() override;
 
 	/** Is the light currenlty lit? */
-	UFUNCTION(BlueprintCallable, Category = "ToggleLight")
+	UFUNCTION(BlueprintCallable, Category = "Toggle")
 		bool IsLit() const;
 
 	/** Turn the light on or off */
-	UFUNCTION(BlueprintCallable, Category = "ToggleLight")
+	UFUNCTION(BlueprintCallable, Category = "Toggle")
 		virtual void TurnOn();
-	UFUNCTION(BlueprintCallable, Category = "ToggleLight")
+	UFUNCTION(BlueprintCallable, Category = "Toggle")
 		virtual void TurnOff();
-	UFUNCTION(BlueprintCallable, Category = "ToggleLight")
+	UFUNCTION(BlueprintCallable, Category = "Toggle")
 		void Toggle();
 
-	virtual void Interact(APawn* Instigator) override;
+	virtual void InteractImplementation(APawn* Instigator) override;
 };

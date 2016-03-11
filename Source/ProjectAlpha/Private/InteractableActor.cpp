@@ -17,32 +17,70 @@ AInteractableActor::AInteractableActor()
 	Text->SetWorldSize(50.f);
 	Text->SetHorizontalAlignment(EHTA_Center);
 	Text->AttachTo(RootComponent);
-	Text->SetRelativeLocation(FVector(0, 0, -30));
-	Text->SetText("A");
+	Text->SetText(TEXT("."));
 	Text->SetVisibility(false);
+
+	MeshComp->SetRenderCustomDepth(false);
+
+	bBlockInteraction = false;
+	bIsFocused = false;
 }
 
-void AInteractableActor::Interact(APawn* Instigator)
+bool AInteractableActor::CanBeInteracted() const
+{
+	return bIsFocused && !bBlockInteraction;
+}
+
+// Bluepring function
+void AInteractableActor::Interact_Implementation(APawn* Instigator)
+{
+	if (CanBeInteracted())
+	{
+		InteractImplementation(Instigator);
+	}
+}
+
+// Overridable function
+void AInteractableActor::InteractImplementation(APawn* Instigator)
 {
 	// Nothing to do here...
 }
 
-void AInteractableActor::BeginFocus()
+void AInteractableActor::BeginFocus(APawn* Instigator)
 {
-	if (MeshComp)
+	if (!bIsFocused && !bBlockInteraction)
 	{
-		MeshComp->SetRenderCustomDepth(true);
-		Text->SetVisibility(true);
+		bIsFocused = true;
+
+		if (MeshComp)
+		{
+			MeshComp->SetRenderCustomDepth(true);
+			Text->SetVisibility(true);
+		}
+
+		if (Instigator)
+		{
+
+		}
 	}
 }
 
-
-void AInteractableActor::EndFocus()
+void AInteractableActor::EndFocus(APawn* Instigator)
 {
-	if (MeshComp)
+	if (bIsFocused)
 	{
-		MeshComp->SetRenderCustomDepth(false);
-		Text->SetVisibility(false);
+		bIsFocused = false;
+		
+		if (MeshComp)
+		{
+			MeshComp->SetRenderCustomDepth(false);
+			Text->SetVisibility(false);
+		}
+
+		if (Instigator)
+		{
+
+		}
 	}
 }
 

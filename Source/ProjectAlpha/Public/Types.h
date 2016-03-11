@@ -2,18 +2,19 @@
 
 #pragma once
 
-#include "Engine/UserDefinedEnum.h"
 #include "Types.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class PROJECTALPHA_API UTypes : public UUserDefinedEnum
+UENUM()
+enum class EInventorySlot : uint8
 {
-	GENERATED_BODY()
-	
-	
-	
-	
+	NONE,
+	Sword,
+
+};
+
+UENUM()
+enum class EItemType : uint8
+{
+	NONE,
+	Sword,
 };
