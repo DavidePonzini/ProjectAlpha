@@ -8,7 +8,5 @@ Saved
 *.pdb
 *.exe
 *-DebugGame.dll
-ProjectAlpha/Binaries/Win64/ProjectAlpha.exp
-ProjectAlpha/Binaries/Win64/ProjectAlpha.lib
 *.log
 *.target.xml
