@@ -60,8 +60,8 @@ FName ABaseCharacter::GetAttachPoint(EInventorySlot Slot)
 {
 	switch (Slot)
 	{
-	case EInventorySlot::Hand:
-		return "HandRightWeapon";
+//	case EInventorySlot::Hand:
+//		return "HandRightWeapon";
 	case EInventorySlot::Sword:
 		return "WeaponHolsterBack01";
 	default:
