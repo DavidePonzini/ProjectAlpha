@@ -4,11 +4,22 @@
 
 #include "Types.generated.h"
 
+
 UENUM()
-enum class EInventorySlot : uint8
+enum class ECurrencyType : uint8
+{
+	Gold,
+	Silver,
+	Bronze,
+	_NO_ELEMS,
+};
+
+UENUM()
+enum class EEquipSlot : uint8
 {
 	NONE,
-	Sword,
+	WeaponBack01,
+	WeaponBack02,
 
 };
 
@@ -16,5 +27,4 @@ UENUM()
 enum class EItemType : uint8
 {
 	NONE,
-	Sword,
 };

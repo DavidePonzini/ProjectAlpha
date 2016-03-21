@@ -55,15 +55,44 @@ void ABaseCharacter::RemoveItem(ABaseItem* Item)
 		return;
 
 }
-
-FName ABaseCharacter::GetAttachPoint(EInventorySlot Slot)
+/*
+FName ABaseCharacter::GetAttachPoint(EEquipSlot Slot)
 {
 	switch (Slot)
 	{
-//	case EInventorySlot::Hand:
-//		return "HandRightWeapon";
-	case EInventorySlot::Sword:
+	case EEquipSlot::Back01:
 		return "WeaponHolsterBack01";
+	case EEquipSlot::Back02:
+		return "WeaponHolsterBack02";
+	case EEquipSlot::Hand:
+		return "WeaponHand";
+	default:
+		// Not implemented
+		return "";
+	}
+}
+*/
+FName ABaseCharacter::GetHandAttachPoint(EEquipSlot Slot) const
+{
+	switch (Slot)
+	{
+	case EEquipSlot::WeaponBack01:
+	case EEquipSlot::WeaponBack02:
+		return "WeaponHand";
+	default:
+		// Not implemented
+		return "";
+	}
+}
+
+FName ABaseCharacter::GetBackAttachPoint(EEquipSlot Slot) const
+{
+	switch (Slot)
+	{
+	case EEquipSlot::WeaponBack01:
+		return "WeaponHolsterBack01";
+	case EEquipSlot::WeaponBack02:
+		return "WeaponHolsterBack02";
 	default:
 		// Not implemented
 		return "";
@@ -75,12 +104,12 @@ void ABaseCharacter::EquipItem(ABaseItem* Item)
 	if (!Item)
 		return;
 
-	const FName AttachPoint = GetAttachPoint(Item->GetInventorySlot());
-	
-	
+	const EEquipSlot EquipSlot = Item->GetEquipSlot();
+	if (EquipSlot == EEquipSlot::NONE)
+		return;
 
 	Item->SetActorHiddenInGame(false);
-	Item->AttachRootComponentTo(Mesh, AttachPoint, EAttachLocation::SnapToTarget);
+	Item->AttachRootComponentTo(Mesh, GetBackAttachPoint(EquipSlot), EAttachLocation::SnapToTarget);
 	
 }
 
@@ -117,7 +146,31 @@ float ABaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 	return Health;
 }
+/*
+void ABaseCharacter::SheathItem(ABaseItem * Item)
+{
+	if (!Item)
+		return;
 
+	const EEquipSlot EquipSlot = Item->GetEquipSlot();
+	if (EquipSlot == EEquipSlot::NONE)
+		return;
+	
+	Item->DetachRootComponentFromParent();
+	Item->AttachRootComponentTo(Mesh, GetBackAttachPoint(EquipSlot), EAttachLocation::SnapToTarget);
+}
 
+void ABaseCharacter::UnSheathItem(ABaseItem * Item)
+{
+	if (!Item)
+		return;
 
+	const EEquipSlot EquipSlot = Item->GetEquipSlot();
+	if (EquipSlot == EEquipSlot::NONE)
+		return;
+
+	Item->DetachRootComponentFromParent();
+	Item->AttachRootComponentTo(Mesh, GetHandAttachPoint(EquipSlot), EAttachLocation::SnapToTarget);
+}
+*/
 

@@ -56,8 +56,9 @@ public:
 
 
 	/***** INVENTORY *****/
-public:
-	FName GetAttachPoint(EInventorySlot Slot);
+protected:
+	FName GetHandAttachPoint(EEquipSlot Slot) const;
+	FName GetBackAttachPoint(EEquipSlot Slot) const;
 
 protected:
 	TArray<ABaseItem*> Inventory;
@@ -72,4 +73,10 @@ public:
 		virtual void EquipItem(ABaseItem* Item);
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		virtual void UnEquipItem(ABaseItem* Item);
+	/*
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+		virtual void SheathItem(ABaseItem* Item);
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+		virtual void UnSheathItem(ABaseItem* Item);
+	*/
 };

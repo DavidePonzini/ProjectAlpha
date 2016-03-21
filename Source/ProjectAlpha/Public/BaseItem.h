@@ -19,8 +19,8 @@ public:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = "Equipping")
-		EInventorySlot Slot;
-	EInventorySlot GetInventorySlot();
+		EEquipSlot Slot;
+	EEquipSlot GetEquipSlot();
 
 	/***** COMPONENTS *****/
 protected:
@@ -31,27 +31,16 @@ protected:
 	/***** PRICE ****/
 protected:
 	UPROPERTY(EditAnywhere, Category = "Price")
-		int32 PriceGold;
-	UPROPERTY(EditAnywhere, Category = "Price")
-		int32 PriceSilver;
-	UPROPERTY(EditAnywhere, Category = "Price")
-		int32 PriceBronze;
+		TArray<int64> Price;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Price")
 		bool CanAfford(APawn* Buyer) const;
+/*
+	UFUNCTION(BlueprintCallable, Category = "Price")
+		void SetPrice(int64 Value, ECurrencyType CurrencyType);
 
 	UFUNCTION(BlueprintCallable, Category = "Price")
-		void SetPriceGold(int32 Value);
-	UFUNCTION(BlueprintCallable, Category = "Price")
-		void SetPriceSilver(int32 Value);
-	UFUNCTION(BlueprintCallable, Category = "Price")
-		void SetPriceBronze(int32 Value);
-
-	UFUNCTION(BlueprintCallable, Category = "Price")
-		int32 GetPriceGold() const;
-	UFUNCTION(BlueprintCallable, Category = "Price")
-		int32 GetPriceSilver() const;
-	UFUNCTION(BlueprintCallable, Category = "Price")
-		int32 GetPriceBronze() const;	
+		int64 GetPrice(ECurrencyType CurrencyType) const;
+	*/
 };

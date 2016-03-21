@@ -11,12 +11,11 @@ ABaseItem::ABaseItem()
 	PrimaryActorTick.bCanEverTick = false;
 
 	// Price
-	PriceGold = 0;
-	PriceSilver = 0;
-	PriceBronze = 0;
+	for (uint8 i = 0; i < (uint8)ECurrencyType::_NO_ELEMS; i++)
+		Price.Add(0);
 
 	// Inventory slot
-	Slot = EInventorySlot::NONE;
+	Slot = EEquipSlot::NONE;
 }
 
 // Called when the game starts or when spawned
@@ -26,7 +25,7 @@ void ABaseItem::BeginPlay()
 	
 }
 
-EInventorySlot ABaseItem::GetInventorySlot()
+EEquipSlot ABaseItem::GetEquipSlot()
 {
 	return Slot;
 }
@@ -35,43 +34,14 @@ bool ABaseItem::CanAfford(APawn * Buyer) const
 {
 	return false;
 }
-
-void ABaseItem::SetPriceGold(int32 Value)
+/*
+void ABaseItem::SetPrice(int64 Value, ECurrencyType CurrencyType)
 {
-	if (Value < 0)
-		Value = 0;
-
-	PriceGold = Value;
+	Price[(uint8)CurrencyType] = Value;
 }
 
-void ABaseItem::SetPriceSilver(int32 Value)
+int64 ABaseItem::GetPrice(ECurrencyType CurrencyType) const
 {
-	if (Value < 0)
-		Value = 0;
-
-	PriceSilver = Value;
+	return Price[(uint8)CurrencyType];
 }
-
-void ABaseItem::SetPriceBronze(int32 Value)
-{
-	if (Value < 0)
-		Value = 0;
-
-	PriceBronze = Value;
-}
-
-int32 ABaseItem::GetPriceGold() const
-{
-	return PriceGold;
-}
-
-int32 ABaseItem::GetPriceSilver() const
-{
-	return PriceSilver;
-}
-
-int32 ABaseItem::GetPriceBronze() const
-{
-	return PriceBronze;
-}
-
+*/

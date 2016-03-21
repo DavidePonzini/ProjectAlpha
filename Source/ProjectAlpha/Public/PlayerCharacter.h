@@ -51,6 +51,9 @@ public:
 	/** Jump */
 	void Jump();
 
+	/* Equip/UnEquip weapons*/
+	//void Equip
+
 	/** Death */
 	virtual void Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser) override;
 
@@ -66,5 +69,6 @@ protected:
 private:
 	AInteractableActor* GetInteractableInView();
 	AInteractableActor* FocusedInteractable;
+
 	
 };

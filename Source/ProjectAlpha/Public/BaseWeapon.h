@@ -3,10 +3,11 @@
 #pragma once
 
 #include "BaseItem.h"
+//#include "BaseEquippableActor.h"
 #include "BaseWeapon.generated.h"
 
 UCLASS()
-class PROJECTALPHA_API ABaseWeapon : public ABaseItem
+class PROJECTALPHA_API ABaseWeapon : public ABaseItem//, public ABaseEquippableActor
 {
 	GENERATED_BODY()
 	
