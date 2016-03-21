@@ -1,0 +1,27 @@
+.	InventoryBaseItem /** Oggetto generico che puo` essere aggiunto all'inventario **/
+		| /* Contiene dati sull'oggetto che verra` poi aggiunto, setta quei dati sull'oggetto quando lo si equipaggia */
+//		| /* E` una lista che contiene la classe e un contatore di quegli oggetti */
+		|`InventoryBaseWeapon /** Arma generica **/ /* contiene info su: resistenza, effetti applicati sull'arma */
+		|`InventoryBaseArmour /** Armatura generica **/ /* contiene info su: resistenza, effetti applicati sull'armatura */
+		 `InventoryBaseConsumable /** Oggetto consumabile generico **/
+
+Actor
+.	|`InteractableActor /** Oggetto con cui si puo` interagire **/
+.	|	`PickupActor /** Oggetto che puo` essere raccolto. Aggiunge InventoryBaseItem all'inventario **/
+	|
+.	|`BaseEquippableActor /** Oggetto che puo` essere equipaggiato **/
+.		|`BaseWeapon /** Arma generica **/
+		|	|`BaseMeleeWeapon /** Arma generica corpo a corpo **/
+		|	|	`/* [Una classe per ogni tipo di arma] */
+		|	 `BaseRangedWeapon /** Arma generica a distanza **/
+		|		`/* [Una classe per ogni tipo di arma] */
+		|`BaseArmour /** Armatura generica (include vestiti) **/
+		`BaseConsumable /** Oggetto generico che puo` essere utilizzato una sola volta **/
+			|`BasePotion /** Pozione generica **/
+			|	 `/* [Una classe per ogni tipo di pozione] */
+			 `/* [Cibo?] */
+
+Pawn
+.	 `BaseCharacter /** Personaggio generico **/
+.		|`PlayerCharacter /** Personaggio controllato da un giocatore **/
+			 `/* TODO tutti i personaggi controllati dall'AI */
