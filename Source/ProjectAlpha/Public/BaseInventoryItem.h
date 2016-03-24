@@ -17,7 +17,7 @@ public:
 
 
 	TSubclassOf<ABaseEquippableActor> EquippableActor;
-	TSubclassOf<APickupActor> PickupActor;
+//	TSubclassOf<APickupActor> PickupActor;
 
 	void Equip(APawn* WhoEquipped);
 	void UnEquip();

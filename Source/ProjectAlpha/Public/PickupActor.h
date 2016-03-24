@@ -3,7 +3,7 @@
 #pragma once
 
 #include "InteractableActor.h"
-//#include "BaseInventoryItem.h"
+#include "BaseInventoryItem.h"
 #include "PickupActor.generated.h"
 
 /**
@@ -25,7 +25,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 
-//	TSubclassOf<ABaseInventoryItem> InventoryItem;
+	//BaseInventoryItem;// *InventoryItem;
 
 	virtual void InteractImplementation(APawn* Instigator) override;
 
