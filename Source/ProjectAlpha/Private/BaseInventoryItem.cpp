@@ -3,29 +3,32 @@
 #include "ProjectAlpha.h"
 #include "BaseInventoryItem.h"
 
-BaseInventoryItem::BaseInventoryItem()
+UBaseInventoryItem::UBaseInventoryItem()
 {
 }
 
-BaseInventoryItem::~BaseInventoryItem()
+UBaseInventoryItem::~UBaseInventoryItem()
 {
+/*
 	if (bIsEquipped)
 		UnEquip();
+*/
 }
 
-void BaseInventoryItem::Equip(APawn* WhoEquipped)
+void UBaseInventoryItem::Equip(APawn* WhoEquipped)
 {
 }
 
-void BaseInventoryItem::UnEquip()
+void UBaseInventoryItem::UnEquip()
 {
 }
 
-void BaseInventoryItem::Drop()
+void UBaseInventoryItem::Drop()
 {
 }
-
-bool BaseInventoryItem::CanAfford(APawn* Buyer) const
+/*
+bool UBaseInventoryItem::CanAfford(APawn* Buyer) const
 {
 	return false;
 }
+*/

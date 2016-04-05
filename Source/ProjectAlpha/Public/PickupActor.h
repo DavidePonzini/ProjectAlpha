@@ -3,7 +3,7 @@
 #pragma once
 
 #include "InteractableActor.h"
-#include "BaseInventoryItem.h"
+#include "BaseItem.h"
 #include "PickupActor.generated.h"
 
 /**
@@ -24,11 +24,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
-
-	//BaseInventoryItem;// *InventoryItem;
+	UPROPERTY(EditAnywhere, Category = "Inventory")
+		TSubclassOf<UBaseItem> InventoryItem;
 
 	virtual void InteractImplementation(APawn* Instigator) override;
 
-	
+	virtual void BeginFocus(APawn* Instigator) override;
+	virtual void EndFocus(APawn* Instigator) override;
 	
 };

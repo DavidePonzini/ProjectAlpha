@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
+/*
 #pragma once
 
 #include "BaseItem.h"
@@ -21,8 +21,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 	
-
+	*/
 	/***** Damage *****/
+/*
 protected:
 	UPROPERTY(EditAnywhere, Category = "Damage")
 		float Damage;
@@ -37,3 +38,4 @@ public:
 		void SetDamage(float Value);
 
 };
+*/

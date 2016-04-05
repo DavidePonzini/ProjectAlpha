@@ -3,21 +3,27 @@
 #pragma once
 
 #include "BaseEquippableActor.h"
-#include "PickupActor.h"
+//#include "PickupActor.h"
 #include "Types.h"
+#include "BaseInventoryItem.generated.h"
 
 /**
  * 
  */
-class PROJECTALPHA_API BaseInventoryItem
+
+UCLASS()
+class PROJECTALPHA_API UBaseInventoryItem : public UObject
 {
+	GENERATED_BODY()
+
 public:
-	BaseInventoryItem();
-	~BaseInventoryItem();
+	UBaseInventoryItem();
+	~UBaseInventoryItem();
 
-
-	TSubclassOf<ABaseEquippableActor> EquippableActor;
-//	TSubclassOf<APickupActor> PickupActor;
+	UPROPERTY(EditAnywhere, Category = "Inventory")
+		TSubclassOf<ABaseEquippableActor> EquippableActor;
+//	UPROPERTY(EditAnywhere, Category = "Inventory")
+//		TSubclassOf<APickupActor> PickupActor;
 
 	void Equip(APawn* WhoEquipped);
 	void UnEquip();
@@ -28,6 +34,7 @@ public:
 	APawn* WhoIsEquipping;
 
 	/***** PRICE ****/
+/*
 protected:
 	UPROPERTY(EditAnywhere, Category = "Price")
 		TArray<int64> Price;
@@ -35,7 +42,7 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable, Category = "Price")
 		bool CanAfford(APawn* Buyer) const;
-/*
+
 	UFUNCTION(BlueprintCallable, Category = "Price")
 	void SetPrice(int64 Value, ECurrencyType CurrencyType);
 

@@ -61,22 +61,22 @@ protected:
 	FName GetBackAttachPoint(EEquipSlot Slot) const;
 
 protected:
-	TArray<ABaseItem*> Inventory;
+	TArray<UBaseItem*> Inventory;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void AddItem(ABaseItem* Item);
+		virtual void AddItem(UBaseItem* Item);
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void RemoveItem(ABaseItem* Item);
+		virtual void RemoveItem(UBaseItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void EquipItem(ABaseItem* Item);
+		virtual void EquipItem(UBaseItem* Item);
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void UnEquipItem(ABaseItem* Item);
+		virtual void UnEquipItem(UBaseItem* Item);
 	/*
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void SheathItem(ABaseItem* Item);
+		virtual void SheathItem(UBaseItem* Item);
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void UnSheathItem(ABaseItem* Item);
+		virtual void UnSheathItem(UBaseItem* Item);
 	*/
 };

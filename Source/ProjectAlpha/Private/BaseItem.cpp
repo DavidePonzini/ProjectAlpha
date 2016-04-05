@@ -3,45 +3,32 @@
 #include "ProjectAlpha.h"
 #include "BaseItem.h"
 
-
-// Sets default values
-ABaseItem::ABaseItem()
+UBaseItem::UBaseItem()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-
-	// Price
-	for (uint8 i = 0; i < (uint8)ECurrencyType::_NO_ELEMS; i++)
-		Price.Add(0);
-
-	// Inventory slot
-	Slot = EEquipSlot::NONE;
 }
 
-// Called when the game starts or when spawned
-void ABaseItem::BeginPlay()
+UBaseItem::~UBaseItem()
 {
-	Super::BeginPlay();
-	
+	/*
+	if (bIsEquipped)
+	UnEquip();
+	*/
 }
 
-EEquipSlot ABaseItem::GetEquipSlot()
+void UBaseItem::Equip(APawn* WhoEquipped)
 {
-	return Slot;
 }
 
-bool ABaseItem::CanAfford(APawn * Buyer) const
+void UBaseItem::UnEquip()
 {
-	return false;
+}
+
+void UBaseItem::Drop()
+{
 }
 /*
-void ABaseItem::SetPrice(int64 Value, ECurrencyType CurrencyType)
+bool UBaseItem::CanAfford(APawn* Buyer) const
 {
-	Price[(uint8)CurrencyType] = Value;
-}
-
-int64 ABaseItem::GetPrice(ECurrencyType CurrencyType) const
-{
-	return Price[(uint8)CurrencyType];
+return false;
 }
 */

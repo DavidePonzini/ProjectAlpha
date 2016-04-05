@@ -60,7 +60,7 @@ void AInteractableActor::BeginFocus(APawn* Instigator)
 
 		if (Instigator)
 		{
-
+			DrawDebugLine(GetWorld(), Instigator->GetActorLocation(), GetActorLocation(), FColor::Blue, false, 1.0f);
 		}
 	}
 }

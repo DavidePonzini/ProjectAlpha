@@ -14,7 +14,7 @@ public:
 	Inventory();
 	~Inventory();
 
-	void AddItem(ABaseItem* Item);
+	void AddItem(UBaseItem* Item);
 private:
-	TArray<ABaseItem*> Items;
+	//TArray<ABaseItem*> Items;
 };
