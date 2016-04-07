@@ -153,7 +153,6 @@ AInteractableActor* APlayerCharacter::GetInteractableInView()
 		return NULL;
 
 	const float TraceRadius = 150;
-	const enum ECollisionChannel ECC_Interactable = ECC_GameTraceChannel1;
 	const enum EObjectTypeQuery TraceObject = ObjectTypeQuery1;
 
 	FVector CamLoc;

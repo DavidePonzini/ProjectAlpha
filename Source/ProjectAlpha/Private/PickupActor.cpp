@@ -2,7 +2,6 @@
 
 #include "ProjectAlpha.h"
 #include "PickupActor.h"
-#include "BaseCharacter.h"
 
 
 APickupActor::APickupActor()
@@ -17,21 +16,21 @@ void APickupActor::Tick(float DeltaSeconds)
 {
 }
 
-void APickupActor::InteractImplementation(APawn* Instigator)
+void APickupActor::InteractImplementation(ABaseCharacter* Instigator)
 {
 	ABaseCharacter* p = Cast<ABaseCharacter>(Instigator);
-	p->AddItem(InventoryItem->GetDefaultObject<UBaseItem>());
+	p->AddItem(InventoryItem->GetDefaultObject<UItem>());
 	
 	//SetActorHiddenInGame(true);
 
 }
 
-void APickupActor::BeginFocus(APawn* Instigator)
+void APickupActor::BeginFocus(ABaseCharacter* Instigator)
 {
 	Super::BeginFocus(Instigator);
 }
 
-void APickupActor::EndFocus(APawn* Instigator)
+void APickupActor::EndFocus(ABaseCharacter* Instigator)
 {
 	Super::EndFocus(Instigator);
 

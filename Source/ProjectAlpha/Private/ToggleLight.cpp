@@ -82,7 +82,7 @@ void AToggleLight::Toggle()
 		TurnOn();
 }
 
-void AToggleLight::InteractImplementation(APawn* Instigator)
+void AToggleLight::InteractImplementation(ABaseCharacter* Instigator)
 {
 	Super::InteractImplementation(Instigator);
 

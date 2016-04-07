@@ -53,5 +53,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Toggle")
 		void Toggle();
 
-	virtual void InteractImplementation(APawn* Instigator) override;
+	virtual void InteractImplementation(ABaseCharacter* Instigator) override;
 };

@@ -32,7 +32,7 @@ bool AInteractableActor::CanBeInteracted() const
 }
 
 // Bluepring function
-void AInteractableActor::Interact_Implementation(APawn* Instigator)
+void AInteractableActor::Interact_Implementation(ABaseCharacter* Instigator)
 {
 	if (CanBeInteracted())
 	{
@@ -41,12 +41,12 @@ void AInteractableActor::Interact_Implementation(APawn* Instigator)
 }
 
 // Overridable function
-void AInteractableActor::InteractImplementation(APawn* Instigator)
+void AInteractableActor::InteractImplementation(ABaseCharacter* Instigator)
 {
 	// Nothing to do here...
 }
 
-void AInteractableActor::BeginFocus(APawn* Instigator)
+void AInteractableActor::BeginFocus(ABaseCharacter* Instigator)
 {
 	if (!bIsFocused && !bBlockInteraction)
 	{
@@ -65,7 +65,7 @@ void AInteractableActor::BeginFocus(APawn* Instigator)
 	}
 }
 
-void AInteractableActor::EndFocus(APawn* Instigator)
+void AInteractableActor::EndFocus(ABaseCharacter* Instigator)
 {
 	if (bIsFocused)
 	{

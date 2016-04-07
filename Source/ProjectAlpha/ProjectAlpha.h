@@ -4,3 +4,6 @@
 
 #include "Engine.h"
 
+/* Custom trace channels */
+#define ECC_Interactable ECC_GameTraceChannel1
+

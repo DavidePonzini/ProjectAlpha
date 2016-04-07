@@ -3,7 +3,8 @@
 #pragma once
 
 #include "GameFramework/Character.h"
-#include "BaseItem.h"
+#include "Item.h"
+#include "Types.h"
 #include "BaseCharacter.generated.h"
 
 UCLASS(abstract)
@@ -57,26 +58,29 @@ public:
 
 	/***** INVENTORY *****/
 protected:
+	AEquippableActor* Weapon1;
+//	AEquippableActor* Weapon2;
+protected:
 	FName GetHandAttachPoint(EEquipSlot Slot) const;
 	FName GetBackAttachPoint(EEquipSlot Slot) const;
 
 protected:
-	TArray<UBaseItem*> Inventory;
+	TArray<UItem*> Inventory;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void AddItem(UBaseItem* Item);
+		virtual void AddItem(UItem* Item);
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void RemoveItem(UBaseItem* Item);
+		virtual void RemoveItem(UItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void EquipItem(UBaseItem* Item);
+		virtual void EquipItem(UItem* Item);
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void UnEquipItem(UBaseItem* Item);
+		virtual void UnEquipItem(UItem* Item);
 	/*
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void SheathItem(UBaseItem* Item);
+		virtual void SheathItem(UItem* Item);
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void UnSheathItem(UBaseItem* Item);
+		virtual void UnSheathItem(UItem* Item);
 	*/
 };

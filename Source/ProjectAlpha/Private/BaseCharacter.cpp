@@ -42,7 +42,7 @@ void ABaseCharacter::OutOfWorld()
 	RootComponent->SetWorldLocation(FVector(0, 0, 108));
 }
 
-void ABaseCharacter::AddItem(UBaseItem* Item)
+void ABaseCharacter::AddItem(UItem* Item)
 {
 	if (!Item)
 		return;
@@ -50,7 +50,7 @@ void ABaseCharacter::AddItem(UBaseItem* Item)
 	EquipItem(Item);
 }
 
-void ABaseCharacter::RemoveItem(UBaseItem* Item)
+void ABaseCharacter::RemoveItem(UItem* Item)
 {
 	if (!Item)
 		return;
@@ -101,33 +101,30 @@ FName ABaseCharacter::GetBackAttachPoint(EEquipSlot Slot) const
 	}
 }
 
-void ABaseCharacter::EquipItem(UBaseItem* Item)
+void ABaseCharacter::EquipItem(UItem* Item)
 {
 	if (!Item)
 		return;
 
-	ABaseEquippableActor* a = GetWorld()->SpawnActor<ABaseEquippableActor>(Item->EquippableActor);
-//	ABaseEquippableActor* e = Item->EquippableActor->GetDefaultObject<ABaseEquippableActor>();
+	Weapon1 = GetWorld()->SpawnActor<AEquippableActor>(Item->EquippableActor);
 
 	const EEquipSlot EquipSlot = EEquipSlot::WeaponBack01;
 	if (EquipSlot == EEquipSlot::NONE)
 		return;
 
-	a->SetActorHiddenInGame(false);
-	a->AttachRootComponentTo(GetMesh(), GetBackAttachPoint(EquipSlot), EAttachLocation::SnapToTarget);
+	Weapon1->SetActorHiddenInGame(false);
+	Weapon1->AttachRootComponentTo(GetMesh(), GetBackAttachPoint(EquipSlot), EAttachLocation::SnapToTarget);
 
 }
 
-void ABaseCharacter::UnEquipItem(UBaseItem* Item)
+void ABaseCharacter::UnEquipItem(UItem* Item)
 {
-	if (!Item)
+	if (!Weapon1)
 		return;
 
-	//GetMesh()->AttachChildren
-/*
-	Item->DetachRootComponentFromParent();
-	Item->SetActorHiddenInGame(true);
-*/
+	Weapon1->DetachRootComponentFromParent();
+	Weapon1->SetActorHiddenInGame(true);
+
 }
 
 float ABaseCharacter::GetMaxHealth() const

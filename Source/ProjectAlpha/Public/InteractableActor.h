@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "BaseCharacter.h"
 #include "InteractableActor.generated.h"
 
 UCLASS(ABSTRACT)
@@ -32,8 +33,8 @@ protected:
 	bool bIsFocused;
 
 public:
-	virtual void BeginFocus(APawn* Instigator);
-	virtual void EndFocus(APawn* Instigator);
+	virtual void BeginFocus(ABaseCharacter* Instigator);
+	virtual void EndFocus(ABaseCharacter* Instigator);
 
 	
 	/***** INTERACTION *****/
@@ -43,11 +44,11 @@ protected:
 		bool bBlockInteraction;
 	
 	/* Actual code called when interacting */
-	virtual void InteractImplementation(APawn* Instigator);
+	virtual void InteractImplementation(ABaseCharacter* Instigator);
 
 public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")
-		void Interact(APawn* WhoInteracted);
+		void Interact(ABaseCharacter* WhoInteracted);
 
 	/* Returns true is activation is not blocked and this actor is focused */
 	UFUNCTION(BlueprintCallable, Category = "Interaction")
