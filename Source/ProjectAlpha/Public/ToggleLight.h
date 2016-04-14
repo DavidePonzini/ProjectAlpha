@@ -6,6 +6,7 @@
 #include "InteractableActor.h"
 #include "ToggleLight.generated.h"
 
+
 UCLASS()
 class PROJECTALPHA_API AToggleLight : public AInteractableActor
 {

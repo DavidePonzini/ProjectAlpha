@@ -2,6 +2,8 @@
 
 #include "ProjectAlpha.h"
 #include "BaseCharacter.h"
+#include "Item.h"
+#include "EquippableActor.h"
 
 
 // Sets default values

@@ -2,13 +2,12 @@
 
 #pragma once
 
-#include "EquippableActor.h"
-//#include "BaseCharacter.h"
-	class ABaseCharacter;
-//#include "PickupActor.h"
-	class APickupActor;
+
 #include "Types.h"
 #include "Item.generated.h"
+class AEquippableActor;
+class ABaseCharacter;
+class APickupActor;
 
 /**
 *

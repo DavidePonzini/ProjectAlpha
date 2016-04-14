@@ -4,6 +4,8 @@
 #include "Item.h"
 #include "BaseCharacter.h"
 #include "PickupActor.h"
+#include "EquippableActor.h"
+
 
 UItem::UItem()
 {

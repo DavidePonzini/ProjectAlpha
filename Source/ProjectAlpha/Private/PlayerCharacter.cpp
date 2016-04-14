@@ -2,7 +2,7 @@
 
 #include "ProjectAlpha.h"
 #include "PlayerCharacter.h"
-
+#include "InteractableActor.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()

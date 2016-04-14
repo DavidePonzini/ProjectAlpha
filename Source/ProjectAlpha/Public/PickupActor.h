@@ -3,8 +3,8 @@
 #pragma once
 
 #include "InteractableActor.h"
-#include "Item.h"
 #include "PickupActor.generated.h"
+class UItem;
 
 /**
  * 

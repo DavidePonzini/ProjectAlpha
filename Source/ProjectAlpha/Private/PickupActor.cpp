@@ -2,6 +2,8 @@
 
 #include "ProjectAlpha.h"
 #include "PickupActor.h"
+#include "Item.h"
+#include "BaseCharacter.h"
 
 
 APickupActor::APickupActor()

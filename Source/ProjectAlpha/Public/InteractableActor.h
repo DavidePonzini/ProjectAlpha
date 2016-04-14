@@ -3,8 +3,9 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "BaseCharacter.h"
 #include "InteractableActor.generated.h"
+class ABaseCharacter;
+
 
 UCLASS(ABSTRACT)
 class PROJECTALPHA_API AInteractableActor : public AActor

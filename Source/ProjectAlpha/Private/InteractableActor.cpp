@@ -2,6 +2,7 @@
 
 #include "ProjectAlpha.h"
 #include "InteractableActor.h"
+#include "BaseCharacter.h"
 
 
 // Sets default values

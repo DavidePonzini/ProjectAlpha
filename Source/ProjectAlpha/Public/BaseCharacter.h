@@ -3,9 +3,11 @@
 #pragma once
 
 #include "GameFramework/Character.h"
-#include "Item.h"
 #include "Types.h"
 #include "BaseCharacter.generated.h"
+class UItem;
+class AEquippableActor;
+
 
 UCLASS(abstract)
 class PROJECTALPHA_API ABaseCharacter : public ACharacter
