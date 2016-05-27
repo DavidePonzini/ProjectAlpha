@@ -25,6 +25,6 @@ Actor
 			 `/* [Cibo?] */
 
 Pawn
-	 `Character /** Personaggio generico **/
+	 `BaseCharacter /** Personaggio generico **/
 		|`PlayerCharacter /** Personaggio controllato da un giocatore **/
 			 `/* TODO tutti i personaggi controllati dall'AI */

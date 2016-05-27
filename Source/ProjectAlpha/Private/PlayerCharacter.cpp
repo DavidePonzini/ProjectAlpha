@@ -235,7 +235,7 @@ AInteractableActor* APlayerCharacter::GetInteractableInView()
 	DrawDebugSphere(GetWorld(), TraceEnd, 150, 6, FColor::Blue);
 //	const FString name = GetDebugName(Hit.GetActor());
 //	DrawDebugString(GetWorld(), TraceEnd, name, nullptr, FColor::White, 0.01);
-/*
+
 //	GetWorld()->LineTraceSingle(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
 //	GetWorld()->

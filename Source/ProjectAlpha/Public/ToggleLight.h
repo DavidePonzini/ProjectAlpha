@@ -21,7 +21,7 @@ public:
 	/** Mesh component */
 /*	UPROPERTY(EditDefaultsOnly, Category = "ToggleLight | Mesh")
 		UStaticMeshComponent* MeshComp;
-
+*/
 	/** Sound component */
 	UPROPERTY(EditDefaultsOnly, Category = "ToggleLight | Sound")
 		UAudioComponent* AudioComp;
