@@ -1,6 +1,7 @@
 Binaries
 Intermediate
 Saved
+Build
 *.sdf
 *.opensdf
 *.sln
@@ -10,3 +11,4 @@ Saved
 *-DebugGame.dll
 *.log
 *.target.xml
+ProjectAlpha.VC.db
