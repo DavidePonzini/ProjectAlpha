@@ -2,181 +2,80 @@
 
 #include "ProjectAlpha.h"
 #include "BaseCharacter.h"
-#include "Item.h"
-#include "EquippableActor.h"
 
 
-// Sets default values
 ABaseCharacter::ABaseCharacter()
+	: Super()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	fHealthMax = 1000.0f;
+	fHealth = 850.0f;
 
-	
-}
+	fKiMax = 200.0f;
+	fKi = 50.0f;
 
-// Called when the game starts or when spawned
-void ABaseCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
-	Health = MaxHealth;
-}
-
-float ABaseCharacter::RestoreHealth(float Amount)
-{
-	Health = FMath::Clamp(Health + Amount, 0.0f, MaxHealth);
-
-	return Health;
-}
-
-void ABaseCharacter::Die(float KillingDamage, FDamageEvent const & DamageEvent, AController * Killer, AActor * DamageCauser)
-{
-	EndPlay(EEndPlayReason::Destroyed);
-
-	RootComponent->SetWorldLocation(FVector(0, 0, 108));
-
-	BeginPlay();
-}
-
-void ABaseCharacter::OutOfWorld()
-{
-	RootComponent->SetWorldLocation(FVector(0, 0, 108));
-}
-
-void ABaseCharacter::AddItem(UItem* Item)
-{
-	if (!Item)
-		return;
-
-	EquipItem(Item);
-}
-
-void ABaseCharacter::RemoveItem(UItem* Item)
-{
-	if (!Item)
-		return;
-
-	UnEquipItem(Item);
-}
-/*
-FName ABaseCharacter::GetAttachPoint(EEquipSlot Slot)
-{
-	switch (Slot)
-	{
-	case EEquipSlot::Back01:
-		return "WeaponHolsterBack01";
-	case EEquipSlot::Back02:
-		return "WeaponHolsterBack02";
-	case EEquipSlot::Hand:
-		return "WeaponHand";
-	default:
-		// Not implemented
-		return "";
-	}
-}
-*/
-FName ABaseCharacter::GetHandAttachPoint(EEquipSlot Slot) const
-{
-	switch (Slot)
-	{
-	case EEquipSlot::WeaponBack01:
-	case EEquipSlot::WeaponBack02:
-		return "WeaponHand";
-	default:
-		// Not implemented
-		return "";
-	}
-}
-
-FName ABaseCharacter::GetBackAttachPoint(EEquipSlot Slot) const
-{
-	switch (Slot)
-	{
-	case EEquipSlot::WeaponBack01:
-		return "WeaponHolsterBack01";
-	case EEquipSlot::WeaponBack02:
-		return "WeaponHolsterBack02";
-	default:
-		// Not implemented
-		return "";
-	}
-}
-
-void ABaseCharacter::EquipItem(UItem* Item)
-{
-	if (!Item)
-		return;
-
-	Weapon1 = GetWorld()->SpawnActor<AEquippableActor>(Item->EquippableActor);
-
-	const EEquipSlot EquipSlot = EEquipSlot::WeaponBack01;
-	if (EquipSlot == EEquipSlot::NONE)
-		return;
-
-	Weapon1->SetActorHiddenInGame(false);
-	Weapon1->AttachRootComponentTo(GetMesh(), GetBackAttachPoint(EquipSlot), EAttachLocation::SnapToTarget);
-
-}
-
-void ABaseCharacter::UnEquipItem(UItem* Item)
-{
-	if (!Weapon1)
-		return;
-
-	Weapon1->DetachRootComponentFromParent();
-	Weapon1->SetActorHiddenInGame(true);
-
-}
-
-float ABaseCharacter::GetMaxHealth() const
-{
-	return MaxHealth;
+	fStaminaMax = 1000.0f;
+	fStamina = 623.0f;
 }
 
 float ABaseCharacter::GetHealth() const
 {
-	return Health;
+	return fHealth;
 }
 
-float ABaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* Instigator, AActor* DamageCauser)
+float ABaseCharacter::GetHealthMax() const
 {
-	Super::TakeDamage(DamageAmount, DamageEvent, Instigator, DamageCauser);
-
-	Health = FMath::Clamp(Health - DamageAmount, 0.0f, MaxHealth);
-
-	if (Health <= 0)
-	{
-		Die(DamageAmount, DamageEvent, Instigator, DamageCauser);
-	}
-
-	return Health;
+	return fHealthMax;
 }
+
+float ABaseCharacter::GetKi() const
+{
+	return fKi;
+}
+
+float ABaseCharacter::GetKiMax() const
+{
+	return fKiMax;
+}
+
+float ABaseCharacter::GetStamina() const
+{
+	return fStamina;
+}
+
+float ABaseCharacter::GetStaminaMax() const
+{
+	return fStaminaMax;
+}
+
+float ABaseCharacter::GetHealthPercent() const
+{
+	return GetHealth() / GetHealthMax();
+}
+
+float ABaseCharacter::GetKiPercent() const
+{
+	return GetKi() / GetKiMax();
+}
+
+float ABaseCharacter::GetStaminaPercent() const
+{
+	return GetStamina() / GetStaminaMax();
+}
+
 /*
-void ABaseCharacter::SheathItem(ABaseItem * Item)
+void ABaseCharacter::EquipItem(AActor * item)
 {
-	if (!Item)
-		return;
+	const FName socketName = "BackWeaponHolsterMelee1";
 
-	const EEquipSlot EquipSlot = Item->GetEquipSlot();
-	if (EquipSlot == EEquipSlot::NONE)
-		return;
-	
-	Item->DetachRootComponentFromParent();
-	Item->AttachRootComponentTo(Mesh, GetBackAttachPoint(EquipSlot), EAttachLocation::SnapToTarget);
+	item->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, socketName);
 }
 
-void ABaseCharacter::UnSheathItem(ABaseItem * Item)
+FString ABaseCharacter::TEST_GetInventoryText() const
 {
-	if (!Item)
-		return;
+	TArray<AActor> keys;
 
-	const EEquipSlot EquipSlot = Item->GetEquipSlot();
-	if (EquipSlot == EEquipSlot::NONE)
-		return;
+	Inventory.GenerateKeyArray(keys);
 
-	Item->DetachRootComponentFromParent();
-	Item->AttachRootComponentTo(Mesh, GetHandAttachPoint(EquipSlot), EAttachLocation::SnapToTarget);
+	return "TO DO";
 }
 */
-

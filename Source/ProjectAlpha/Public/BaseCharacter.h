@@ -3,10 +3,7 @@
 #pragma once
 
 #include "GameFramework/Character.h"
-#include "Types.h"
 #include "BaseCharacter.generated.h"
-class UItem;
-class AEquippableActor;
 
 
 UCLASS(abstract)
@@ -14,75 +11,52 @@ class PROJECTALPHA_API ABaseCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+	float fHealthMax;
+	float fHealth;
+
+	float fKiMax;
+	float fKi;
+
+	float fStaminaMax;
+	float fStamina;
+
+	//TMap<AActor, int> Inventory;
+
 public:
-	/** Sets default values for this character's properties */
 	ABaseCharacter();
 
-	/** Called when the game starts or when spawned */
-	virtual void BeginPlay() override;
-
-
-	/***** STATS *****/
-public:
-	/** Maximum allowed value of Health, represents full health */
-	UPROPERTY(EditAnywhere, Category = "Stats")
-		float MaxHealth;
-protected:
-	/** Current health */
-	UPROPERTY()
-		float Health;
-
-public:
-	UFUNCTION(BlueprintCallable, Category = "Stats|Health")
-		float GetMaxHealth() const;
+/*	UFUNCTION(BlueprintCallable, Category = "Inventory")
+		void EquipItem(AActor* item);
+*/
 	UFUNCTION(BlueprintCallable, Category = "Stats|Health")
 		float GetHealth() const;
 
-	/***** STATS CHANGES *****/
-public:
 	UFUNCTION(BlueprintCallable, Category = "Stats|Health")
-		virtual float RestoreHealth(float Amount);
+		float GetHealthMax() const;
 
-	/** Take Damage */
-	UFUNCTION(BlueprintCallable, Category = "Damage")
-		virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* WhoDamaged, AActor* DamageCauser) override;
+	UFUNCTION(BlueprintCallable, Category = "Stats|Health")
+		float GetHealthPercent() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Stats|Ki")
+		float GetKi() const;
 
-	/***** DEATH *****/	
-	/** Called when this actor dies */
-	UFUNCTION(BlueprintCallable, Category = "Death")
-		virtual void Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+	UFUNCTION(BlueprintCallable, Category = "Stats|Ki")
+		float GetKiMax() const;
 
-	/** Handle character getting out of world */
-	UFUNCTION(BlueprintCallable, Category = "OutOfWorld")
-		virtual void OutOfWorld();
+	UFUNCTION(BlueprintCallable, Category = "Stats|Ki")
+		float GetKiPercent() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Stats|Stamina")
+		float GetStamina() const;
 
-	/***** INVENTORY *****/
-protected:
-	AEquippableActor* Weapon1;
-//	AEquippableActor* Weapon2;
-protected:
-	FName GetHandAttachPoint(EEquipSlot Slot) const;
-	FName GetBackAttachPoint(EEquipSlot Slot) const;
+	UFUNCTION(BlueprintCallable, Category = "Stats|Stamina")
+		float GetStaminaMax() const;
 
-protected:
-	TArray<UItem*> Inventory;
-
-public:
+	UFUNCTION(BlueprintCallable, Category = "Stats|Stamina")
+		float GetStaminaPercent() const;
+/*
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void AddItem(UItem* Item);
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void RemoveItem(UItem* Item);
-
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void EquipItem(UItem* Item);
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void UnEquipItem(UItem* Item);
-	/*
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void SheathItem(UItem* Item);
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		virtual void UnSheathItem(UItem* Item);
-	*/
+		FString TEST_GetInventoryText() const;
+*/
 };

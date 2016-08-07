@@ -4,88 +4,21 @@
 #include "InteractableActor.h"
 #include "BaseCharacter.h"
 
-
-// Sets default values
 AInteractableActor::AInteractableActor()
+	: Super(), IInteractable(this)
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	
 
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	RootComponent = MeshComp;
-
-	Text = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text"));
-	Text->SetWorldSize(50.f);
-	Text->SetHorizontalAlignment(EHTA_Center);
-	Text->AttachTo(RootComponent);
-	Text->SetText(TEXT("."));
-	Text->SetVisibility(false);
-
-	MeshComp->SetRenderCustomDepth(false);
-
-	bBlockInteraction = false;
-	bIsFocused = false;
 }
 
-bool AInteractableActor::CanBeInteracted() const
+void AInteractableActor::BeginPlay()
 {
-	return bIsFocused && !bBlockInteraction;
+	Super::BeginPlay();
+	
+	//SetInteractableActor(this);
 }
 
-// Bluepring function
-void AInteractableActor::Interact_Implementation(ABaseCharacter* Instigator)
+FString AInteractableActor::GetInteractableName() const
 {
-	if (CanBeInteracted())
-	{
-		InteractImplementation(Instigator);
-	}
-}
-
-// Overridable function
-void AInteractableActor::InteractImplementation(ABaseCharacter* Instigator)
-{
-	// Nothing to do here...
-}
-
-void AInteractableActor::BeginFocus(ABaseCharacter* Instigator)
-{
-	if (!bIsFocused && !bBlockInteraction)
-	{
-		bIsFocused = true;
-
-		if (MeshComp)
-		{
-			MeshComp->SetRenderCustomDepth(true);
-			Text->SetVisibility(true);
-		}
-
-		if (Instigator)
-		{
-			DrawDebugLine(GetWorld(), Instigator->GetActorLocation(), GetActorLocation(), FColor::Blue, false, 1.0f);
-		}
-	}
-}
-
-void AInteractableActor::EndFocus(ABaseCharacter* Instigator)
-{
-	if (bIsFocused)
-	{
-		bIsFocused = false;
-		
-		if (MeshComp)
-		{
-			MeshComp->SetRenderCustomDepth(false);
-			Text->SetVisibility(false);
-		}
-
-		if (Instigator)
-		{
-
-		}
-	}
-}
-
-UStaticMeshComponent* AInteractableActor::GetMeshComponent() const
-{
-	return MeshComp;
+	return InteractableName;
 }

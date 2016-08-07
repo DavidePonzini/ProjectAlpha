@@ -3,7 +3,10 @@
 #pragma once
 
 #include "BaseCharacter.h"
+#include "Interactable.h"
 #include "PlayerCharacter.generated.h"
+
+
 class AInteractableActor;
 
 
@@ -19,14 +22,6 @@ public:
 		USpringArmComponent* SpringArmComp;
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerCharacter | Camera")
 		UCameraComponent* CameraComp;
-
-/*
-	UPROPERTY(EditAnywhere, Category = "ViewCone")
-		UStaticMeshComponent* ViewCone;
-
-	UFUNCTION(BlueprintCallable, Category = "TEST")
-		UStaticMeshComponent* GetViewCone() const;
-*/
 
 public:
 	/** Sets default values for this character's properties */
@@ -52,24 +47,21 @@ public:
 	/** Jump */
 	void Jump();
 
-	/* Equip/UnEquip weapons*/
-	//void Equip
-
-	/** Death */
-	virtual void Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser) override;
-
 	/**** INTERACTION *****/
 public:
 	UFUNCTION(BlueprintCallable, Category = "Interaction")
 		virtual void Interact();
 
+	UFUNCTION(BlueprintCallable, Category = "Interaction")
+		FString GetFocusedInteractableName() const;
+
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Interaction")
-		float fMaxInteractDistance; 
-
+	UPROPERTY(EditAnywhere, Category = "Interaction")
+		float fMaxInteractDistance;
+	
 private:
-	AInteractableActor* GetInteractableInView();
-	AInteractableActor* FocusedInteractable;
-
+	IInteractable* GetInteractableInView();
+	IInteractable* FocusedInteractable;
+	
 	
 };
