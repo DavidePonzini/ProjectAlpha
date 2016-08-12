@@ -5,12 +5,7 @@
 
 
 ABaseCharacter::ABaseCharacter()
-	: Super()
+	: Super(), ICharacterStats()
 {
 	
-}
-
-UCharacterStats* ABaseCharacter::GetStats() const
-{
-	return Stats;
 }

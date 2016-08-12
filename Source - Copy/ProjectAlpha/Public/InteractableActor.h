@@ -4,8 +4,6 @@
 
 #include "GameFramework/Actor.h"
 #include "Interactable.h"
-#include "InteractableComponent.h"
-#include "BaseCharacter.h"
 #include "InteractableActor.generated.h"
 
 class ABaseCharacter;
@@ -20,12 +18,11 @@ class PROJECTALPHA_API AInteractableActor : public AActor, public IInteractable
 public:
 	AInteractableActor();
 
+	UPROPERTY(EditAnywhere, Category = "Interaction")
+		FString InteractableName;
+
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category = "Interaction")
-		UInteractableComponent* InteractableComponent;
+	virtual FString GetInteractableName() const override;
 
-	UInteractableComponent* GetInteractableComponent() const override;
-
-	
 };

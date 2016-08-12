@@ -61,12 +61,12 @@ void APlayerCharacter::Tick( float DeltaTime )
 			LOG_ACTOR(Log, this, TEXT("InteractableInView: %s"), *GetDebugName(Cast<AActor>(InteractableInView)));
 
 			if (FocusedInteractable)
-				FocusedInteractable->GetInteractableComponent()->OnEndFocus();
+				FocusedInteractable->OnEndFocus();
 			
 			FocusedInteractable = InteractableInView;
 
 			if (FocusedInteractable)
-				FocusedInteractable->GetInteractableComponent()->OnBeginFocus();
+				FocusedInteractable->OnBeginFocus();
 		}
 	}
 
@@ -134,7 +134,7 @@ void APlayerCharacter::Jump()
 void APlayerCharacter::Interact()
 {
 	if(FocusedInteractable)
-		FocusedInteractable->GetInteractableComponent()->OnInteract(this);
+		FocusedInteractable->OnInteract(this);
 }
 
 IInteractable* APlayerCharacter::GetInteractableInView()
@@ -162,19 +162,11 @@ IInteractable* APlayerCharacter::GetInteractableInView()
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Interactable, TraceParams);
 	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1);
 
-	IInteractable* Interactable = Cast<IInteractable>(Hit.GetActor());
-	
-	if (!Interactable)
-		return nullptr;
-
-	if (Interactable->GetInteractableComponent()->IsInteractionBlocked())
-		return nullptr;
-
-	return Interactable;
+	return Cast<IInteractable>(Hit.GetActor());
 
 }
 
 FString APlayerCharacter::GetFocusedInteractableName() const
 {
-	return (FocusedInteractable) ? FocusedInteractable->GetInteractableComponent()->GetInteractionMessage() : FString();
+	return (FocusedInteractable) ? FocusedInteractable->GetInteractableName() : FString();
 }

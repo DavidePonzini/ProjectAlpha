@@ -8,7 +8,7 @@
 
 
 UCLASS(abstract)
-class PROJECTALPHA_API ABaseCharacter : public ACharacter
+class PROJECTALPHA_API ABaseCharacter : public ACharacter, public ICharacterStats
 {
 	GENERATED_BODY()
 
@@ -16,9 +16,6 @@ public:
 	ABaseCharacter();
 
 public:
-	UPROPERTY(EditAnywhere)
-		UCharacterStats* Stats = CreateDefaultSubobject<UCharacterStats>(TEXT("Character Stats"));
-
-	UFUNCTION(BlueprintCallable, Category = "Stats")
-		UCharacterStats* GetStats() const;
+	UPROPERTY(EditAnywhere, Category = "Stats")
+		FStatData Health = Stats[EStatValue::Health];
 };

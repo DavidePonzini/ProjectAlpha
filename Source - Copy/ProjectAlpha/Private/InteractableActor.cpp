@@ -5,19 +5,20 @@
 #include "BaseCharacter.h"
 
 AInteractableActor::AInteractableActor()
-	: Super(), IInteractable()
+	: Super(), IInteractable(this)
 {
-	//InteractableComponent = CreateDefaultSubobject<UInteractableComponent>(TEXT("InteractableComponent"));
+	
+
 }
 
 void AInteractableActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	//SetInteractableActor(this);
 }
 
-UInteractableComponent* AInteractableActor::GetInteractableComponent() const
+FString AInteractableActor::GetInteractableName() const
 {
-	return InteractableComponent;
+	return InteractableName;
 }
-
