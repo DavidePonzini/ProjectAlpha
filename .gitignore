@@ -1,7 +1,9 @@
+.vs
 Binaries
+Build
 Intermediate
 Saved
-Build
+
 *.sdf
 *.opensdf
 *.sln
@@ -12,3 +14,6 @@ Build
 *.log
 *.target.xml
 ProjectAlpha.VC.db
+
+* - Copy
+
