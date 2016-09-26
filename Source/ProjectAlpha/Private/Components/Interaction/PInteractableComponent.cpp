@@ -73,9 +73,3 @@ FString UPInteractableComponent::GetInteractionMessage() const
 {
 	return (bBlockInteraction) ? "" : InteractionMessage;
 }
-
-void UPInteractableComponent::SetOnInteractDelegate(const FOnInteractDelegate& OnInteractDelegate)
-{
-	//AddDynamic(this, OnInteractDelegate);
-
-}

@@ -28,9 +28,7 @@ public:
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractDelegate, APCharacter*, Cause);
 	UPROPERTY(BlueprintAssignable, Category = "Interaction")
 		FOnInteractDelegate OnInteractDelegate;
-	//UFUNCTION(BlueprintCallable, Category = "Interaction")
-	void SetOnInteractDelegate(const FOnInteractDelegate& intdel);
-
+	
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Interaction|Block")
