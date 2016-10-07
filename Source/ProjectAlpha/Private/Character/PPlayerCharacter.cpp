@@ -6,6 +6,7 @@
 
 // Sets default values
 APPlayerCharacter::APPlayerCharacter()
+	: Super()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -81,24 +82,24 @@ void APPlayerCharacter::Tick(float DeltaTime)
 }
 
 // Called to bind functionality to input
-void APPlayerCharacter::SetupPlayerInputComponent(UInputComponent* InputComponent)
+void APPlayerCharacter::SetupPlayerInputComponent(UInputComponent* InputComp)
 {
-	Super::SetupPlayerInputComponent(InputComponent);
+	Super::SetupPlayerInputComponent(InputComp);
 
 	// Movement
-	InputComponent->BindAxis("MoveForward", this, &APPlayerCharacter::MoveForward);
-	InputComponent->BindAxis("MoveRight", this, &APPlayerCharacter::MoveRight);
+	InputComp->BindAxis("MoveForward", this, &APPlayerCharacter::MoveForward);
+	InputComp->BindAxis("MoveRight", this, &APPlayerCharacter::MoveRight);
 
 	// Camera
-	InputComponent->BindAxis("Turn", this, &APPlayerCharacter::Turn);
-	InputComponent->BindAxis("LookUp", this, &APPlayerCharacter::LookUp);
+	InputComp->BindAxis("Turn", this, &APPlayerCharacter::Turn);
+	InputComp->BindAxis("LookUp", this, &APPlayerCharacter::LookUp);
 
 	// Jump
-	InputComponent->BindAction("Jump", IE_Pressed, this, &APPlayerCharacter::Jump);
-	InputComponent->BindAction("Jump", IE_Released, this, &APPlayerCharacter::StopJumping);
+	InputComp->BindAction("Jump", IE_Pressed, this, &APPlayerCharacter::Jump);
+	InputComp->BindAction("Jump", IE_Released, this, &APPlayerCharacter::StopJumping);
 
 	// Interaction
-	InputComponent->BindAction("Interact", IE_Pressed, this, &APPlayerCharacter::Interact);
+	InputComp->BindAction("Interact", IE_Pressed, this, &APPlayerCharacter::Interact);
 }
 
 void APPlayerCharacter::MoveForward(float Value)

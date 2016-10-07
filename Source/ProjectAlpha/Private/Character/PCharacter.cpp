@@ -6,6 +6,7 @@
 
 // Sets default values
 APCharacter::APCharacter()
+	: Super()
 {
 	Stats = CreateDefaultSubobject<UPStatsComponent>(TEXT("Character Stats"));
 	Inventory = CreateDefaultSubobject<UPInventoryComponent>(TEXT("Character Inventory"));
