@@ -1,13 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ProjectAlpha.h"
-#include "Components/PInventoryComponent.h"
+#include "PInventoryComponent.h"
 
-#include "Character/PCharacter.h"
-
-#include "Items/PItem.h"
-#include "Items/PItemEquippable.h"
-#include "Items/PItemWeapon.h"
+#include "PCharacter.h"
 
 
 // Sets default values for this component's properties
@@ -20,6 +16,8 @@ UPInventoryComponent::UPInventoryComponent(const FObjectInitializer& ObjectIniti
 	PrimaryComponentTick.bCanEverTick = false;
 
 	OwnerCharacter = Cast<APCharacter>(GetOwner());
+
+	Inventory.Init(EPItemCategory::NO_ELEMS);
 }
 
 // Called when the game starts
@@ -29,62 +27,31 @@ void UPInventoryComponent::BeginPlay()
 
 }
 
-
-
-
-
-
 ///// Items /////
 
-void UPInventoryComponent::AddItem(TSubclassOf<UPItem> Item)
+void UPInventoryComponent::AddItem(TSubclassOf<UPItem> ItemClass)
 {
-	if (!Item)
+	if (!ItemClass)
 		return;
 
-	int& ItemCount = Items.FindOrAdd(Item);
-	ItemCount++;
-
-	LOG_ACTOR(Log, GetOwner(), "Added item %s", *Item.GetDefaultObject()->Name);
-
-	EquipItem(Item, EPItemSlot::WeaponBack);
-}
-
-void UPInventoryComponent::RemoveItem(TSubclassOf<UPItem> Item)
-{
-	if (!Item)
-		return;
-
-	int* ItemCount = Items.Find(Item);
-	if (!ItemCount)
-	{
-		LOG_ACTOR(Warning, GetOwner(), "Attempting to remove item %s, but there are none in this inventory!", *Item.GetDefaultObject()->Name);
-		return;
-	}
-
-	(*ItemCount)--;
+	Inventory.AddItem(ItemClass);
 	
-	if (*ItemCount <= 0)
-		Items.Remove(Item);
+	//LOG_ACTOR(Log, GetOwner(), "Added item %s", *Item->Name);
 
-	LOG_ACTOR(Log, GetOwner(), "Removed item %s", *Item.GetDefaultObject()->Name);
-
-	UnEquipItem(EPItemSlot::WeaponBack);
+//	EquipItem(Item, EPItemSlot::WeaponBack);
 }
 
+void UPInventoryComponent::RemoveItem(UPItem* Item)
+{
+	if (!Item)
+		return;
+}
 
-
-
-
-
-
-
-
-
-void UPInventoryComponent::EquipItem(TSubclassOf<UPItem> Item, EPItemSlot Slot)
+void UPInventoryComponent::EquipItem(UPItem* Item, EPItemSlot Slot)
 {
 	if (! (
 		Item
-		&& Item.GetDefaultObject()->bCanBeEquipped
+		&& Item->bCanBeEquipped
 		&& OwnerCharacter))
 		return;
 
@@ -92,7 +59,7 @@ void UPInventoryComponent::EquipItem(TSubclassOf<UPItem> Item, EPItemSlot Slot)
 		UnEquipItem(Slot);
 		
 
-	Item.GetDefaultObject()->Equip(this, Slot);
+	Item->Equip(this, Slot);
 }
 
 void UPInventoryComponent::UnEquipItem(EPItemSlot Slot)
@@ -104,12 +71,6 @@ void UPInventoryComponent::UnEquipItem(EPItemSlot Slot)
 	if(EquippedFPItemStruct)
 		EquippedFPItemStruct->Item->UnEquip(this, Slot);
 }
-
-
-
-
-
-
 
 ///// Weapons /////
 
@@ -145,7 +106,6 @@ void UPInventoryComponent::UnEquipWeapon(EPItemSlot Slot)
 	EquippedItems.Remove(Slot);
 }
 
-
 ///// Support /////
 
 FName UPInventoryComponent::GetWeaponSocket(EPWeaponType WeaponType) const
@@ -170,20 +130,9 @@ AActor* UPInventoryComponent::SpawnAndAttach(UClass* ActorToSpawn, USceneCompone
 	
 	return SpawnedActor;
 }
-
-
-
-///// UI /////
-TArray<TSubclassOf<UPItem>> UPInventoryComponent::GetItems() const
+/*
+int UPInventoryComponent::GetItemCount(UPItem* Item) const
 {
-	TArray<TSubclassOf<UPItem>> Result;
-	
-	Items.GenerateKeyArray(Result);
-
-	return Result;
+	return Inventory.GetItemCount(Item);
 }
-
-int UPInventoryComponent::GetItemCount(TSubclassOf<UPItem> Item) const
-{
-	return Items.FindRef(Item);
-}
+*/

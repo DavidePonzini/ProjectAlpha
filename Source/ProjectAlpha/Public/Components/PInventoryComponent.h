@@ -4,27 +4,22 @@
 
 #include "Components/ActorComponent.h"
 
-#include "PItemSlot.h"
-#include "PSpellSlot.h"
+#include "PInventory.h"
+
+#include "PItem.h"
+//#include "PItemEquippable.h"
+#include "PItemWeapon.h"
 
 #include "PInventoryComponent.generated.h"
 
 
 class APCharacter;
 
-enum class EPWeaponType;
-
-class UPItem;
-class UPItemEquippable;
-class UPItemWeapon;
-
-
 struct FPItemStruct
 {
 	UPItem* Item;
 	AActor* Actor;
 };
-
 
 UCLASS(ClassGroup = (Inventory), meta = (BlueprintSpawnableComponent))
 class PROJECTALPHA_API UPInventoryComponent : public UActorComponent
@@ -43,19 +38,26 @@ private:
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		void AddItem(TSubclassOf<UPItem> Item);
+		void AddItem(TSubclassOf<UPItem> ItemClass);
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		void RemoveItem(TSubclassOf<UPItem> Item);
+		void RemoveItem(UPItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		void EquipItem(TSubclassOf<UPItem> Item, EPItemSlot Slot);
+		void EquipItem(UPItem* Item, EPItemSlot Slot);
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		void UnEquipItem(EPItemSlot Slot);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		TArray<TSubclassOf<UPItem>> GetItems() const;
+		FORCEINLINE TArray<UPItem*> GetItems(TEnumAsByte<EPItemCategory> Category) const
+	{
+		return Inventory.GetItems(Category);
+	}
+
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		int GetItemCount(TSubclassOf<UPItem> Item) const;
+		FORCEINLINE int GetItemCount(UPItem* Item) const
+	{
+		return Inventory.GetItemCount(Item);
+	}
 
 public:
 	void EquipWeapon(UPItemWeapon* Weapon, EPItemSlot Slot);
@@ -66,7 +68,7 @@ public:
 	AActor* SpawnAndAttach(UClass* ActorToSpawn, USceneComponent* AttachComponent, FName AttachSocket);
 
 public:
-	TMap<TSubclassOf<UPItem>, int> Items;
+	PInventory<UPItem> Inventory;
 
 	/** Map containing items slots and items equipped in them
 	*	Only one item per slot is allowed */

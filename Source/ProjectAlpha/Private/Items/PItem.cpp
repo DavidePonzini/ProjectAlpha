@@ -3,9 +3,11 @@
 #include "ProjectAlpha.h"
 #include "PItem.h"
 
+#include "PInventoryComponent.h"
+
+
 
 UPItem::UPItem()
-	: Super()
 {
 	bCanBeEquipped = false;
 }
@@ -18,5 +20,20 @@ void UPItem::Equip(UPInventoryComponent* CharacterInventory, EPItemSlot Slot)
 void UPItem::UnEquip(UPInventoryComponent* CharacterInventory, EPItemSlot Slot)
 {
 	// Nothing to do here, UItems cannot be equipped
+}
+
+bool UPItem::IsStackable() const
+{
+	return bIsStackable;
+}
+
+int UPItem::GetCategory() const
+{
+	return Category;
+}
+
+int UPItem::GetMaxCount() const
+{
+	return MaxCount;
 }
 

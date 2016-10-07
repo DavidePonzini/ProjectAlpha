@@ -3,6 +3,8 @@
 #include "ProjectAlpha.h"
 #include "PItemWeapon.h"
 
+#include "PInventoryComponent.h"
+
 
 UPItemWeapon::UPItemWeapon()
 	: Super()

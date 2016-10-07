@@ -3,6 +3,8 @@
 #include "ProjectAlpha.h"
 #include "PItemEquippable.h"
 
+#include "PInventoryComponent.h"
+
 
 UPItemEquippable::UPItemEquippable()
 	: Super()
