@@ -12,7 +12,7 @@ UPStatsComponent::UPStatsComponent()
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	
 }
 
 // Called when the game starts
