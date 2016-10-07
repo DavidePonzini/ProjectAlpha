@@ -5,8 +5,22 @@
 
 
 
-
-void APGameState::SetTime(float Time)
+APGameState::APGameState()
 {
-	fTime = Time;
+	TimeScale = 60.0f;
+}
+
+void APGameState::SetTime(float NewTime)
+{
+	Time = NewTime;
+}
+
+void APGameState::IncrementTime(float Amount)
+{
+	Time += Amount * TimeScale;
+}
+
+void APGameState::SetTimeScale(float NewTimeScale)
+{
+	TimeScale = NewTimeScale;
 }
